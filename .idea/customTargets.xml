@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="f5daad42-64e1-4ecd-811c-f378b5465d05" name="Make" projectName="LambaCalculus">
+      <configuration id="f9673564-4d7c-42ff-80b8-3cccda37552a" name="Make">
+        <build type="TOOL">
+          <tool actionId="Tool_External Tools_Build" />
+        </build>
+        <clean type="TOOL">
+          <tool actionId="Tool_External Tools_Clean" />
+        </clean>
+      </configuration>
+    </target>
+  </component>
+</project>

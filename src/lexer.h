@@ -1,0 +1,53 @@
+
+#ifndef __LEXER__H__
+#define __LEXER__H__
+
+#include <vector>
+#include <string>
+
+#include "inputbuf.h"
+
+
+typedef enum { END_OF_FILE=0,
+               DOT,
+               LPAREN,
+               RPAREN,
+               LAMBDA,
+               ID,
+               SEMICOLON,
+               EQUALS,
+               AT,
+               LBRACK,
+               RBRACK,
+               LCURLY,
+               RCURLY,
+               ERROR
+             } TokenType;
+
+class Token {
+  public:
+    void Print();
+
+    std::string lexeme;
+    TokenType token_type;
+    int line_no;
+};
+
+class LexicalAnalyzer {
+  public:
+    Token GetToken();
+    Token Peek();
+    TokenType UngetToken(Token);
+    LexicalAnalyzer();
+
+  private:
+    std::vector<Token> tokens;
+    int line_no;
+    Token tmp;
+    InputBuffer input;
+
+    bool SkipSpace();
+    Token ScanId();
+};
+
+#endif

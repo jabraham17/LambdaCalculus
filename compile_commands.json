@@ -1,0 +1,72 @@
+[
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/main.cc",
+   "-o",
+   "bin/main.o"
+  ],
+  "file": "src/main.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/inputbuf.cc",
+   "-o",
+   "bin/inputbuf.o"
+  ],
+  "file": "src/inputbuf.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/lexer.cc",
+   "-o",
+   "bin/lexer.o"
+  ],
+  "file": "src/lexer.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/parser.cc",
+   "-o",
+   "bin/parser.o"
+  ],
+  "file": "src/parser.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/preprocessor.cc",
+   "-o",
+   "bin/preprocessor.o"
+  ],
+  "file": "src/preprocessor.cc"
+ }
+]
