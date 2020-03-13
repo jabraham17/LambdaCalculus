@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "parser.h"
 #include "preprocessor.h"
+#include <iostream>
 
 int main (int argc, char* argv[])
 {
@@ -12,17 +13,18 @@ int main (int argc, char* argv[])
         freopen(redirected_stdin, "r", stdin);
     }
 
-    //Parser p;
-    //p.parse();
+    Parser parser;
+    Program* prog = parser.parse();
+    std::cout << *prog << std::endl;
 
 
 
-    Preprocessor pre;
+    /*Preprocessor pre;
     Token t = pre.Peek();
     while(t.token_type != END_OF_FILE and t.token_type != ERROR) {
         t = pre.GetToken();
         t.Print();
-    }
+    }*/
 
     return 0;
 }

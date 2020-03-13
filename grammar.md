@@ -23,12 +23,10 @@ input  -> lines
 lines  -> line
 lines  -> line lines
 line   -> expr SEMICOLON
-expr   -> named
+expr   -> name EQUALS term
 expr   -> term
 var    -> ID
-name   -> AT var
-named  -> name EQUALS term
-named  -> name EQUALS name
+name   -> AT ID
 atom   -> var
 atom   -> name
 term   -> atom
@@ -57,27 +55,13 @@ cat - <(echo "##")
 ### FIRST Sets
 
 ```
-FIRST(lines) = { ID, AT, LPAREN, LCURLY, LBRACK }
-FIRST(line) = { ID, AT, LPAREN, LCURLY, LBRACK }
-FIRST(expr) = { ID, AT, LPAREN, LCURLY, LBRACK }
-FIRST(named) = { AT }
-FIRST(term) = { ID, AT, LPAREN, LCURLY, LBRACK }
-FIRST(var) = { ID }
-FIRST(name) = { AT }
-FIRST(atom) = { ID, AT }
+
 ```
 
 ### FOLLOW Sets
 
 ```
-FOLLOW(lines) = { $ }
-FOLLOW(line) = { $, ID, AT, LPAREN, LCURLY, LBRACK }
-FOLLOW(expr) = { SEMICOLON }
-FOLLOW(named) = { SEMICOLON }
-FOLLOW(term) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
-FOLLOW(var) = { SEMICOLON, ID, AT, EQUALS, LPAREN, RPAREN, LCURLY, DOT, RCURLY, LBRACK, RBRACK }
-FOLLOW(name) = { SEMICOLON, ID, AT, EQUALS, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
-FOLLOW(atom) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
+
 ```
 
 ### Examples

@@ -1,6 +1,6 @@
 
 #include "preprocessor.h"
-
+#include <utility>
 
 Token Preprocessor::GetToken() {
     //preprocessing so we get some tokens
@@ -44,7 +44,8 @@ void Preprocessor::preprocess() {
     readline(line);
 
     applyAbstraction(line);
-    applyApplication(line, 0, line.size()-1);
+    applyApplication(line);
+    //applyApplication(line, 0, line.size()-1);
 
     //add the line to the buffer in reverse order
     for(int i = line.size() - 1; i >= 0; i--) {
@@ -130,8 +131,47 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
     }
 }
 
+void Preprocessor::applyApplication(std::vector<Token>& line) {
+
+    //list of all seen parens
+    std::vector<std::pair<int, int>> parens;
+    for(int i = 0; i < line.size(); i++) {
+        //find the end index of the paren
+        int end = identifyParen(line, i);
+        //if its valid
+        if(end >= 0) {
+            parens.push_back(std::pair<int, int>(i, end));
+        }
+    }
+
+
+}
+int Preprocessor::identifyParen(std::vector<Token> line, int start) {
+    int end = -1;
+    if(line[start].token_type == LPAREN) {
+        int count = 1;
+        //count++ if lparen, count-- if rparen, when count is 0 we have a term
+        int j = start + 1;
+        while(line[j].token_type != SEMICOLON &&
+              line[j].token_type != END_OF_FILE &&
+              line[j].token_type != ERROR) {
+
+            if(line[j].token_type == LPAREN) count++;
+            if(line[j].token_type == RPAREN) count--;
+            if(count == 0) break;
+            j++;
+        }
+        if(line[j].token_type == RPAREN) {
+            //j now points to closing paren
+            end = j;
+        }
+    }
+    return end;
+}
+
 //finds a term and then searches for the term next to it
 //once its found two terms, puts it in brackets
+/*
 void Preprocessor::applyApplication(std::vector<Token>& line, int start, int end) {
 
     bool foundA = false;
@@ -272,4 +312,4 @@ void Preprocessor::identifyTerm(std::vector<Token> line, int i, int& start, int&
     else {
         start = end = -1;
     }
-}
+}*/

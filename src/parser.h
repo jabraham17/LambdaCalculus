@@ -4,6 +4,7 @@
 #include <string>
 #include "lexer.h"
 #include <vector>
+#include "data/expression.h"
 
 class Parser {
     private:
@@ -15,35 +16,32 @@ class Parser {
 
     //parser functions
     //input -> lines
-    void parse_input();
+    void parse_input(Program*);
     //lines -> line
     //lines -> line lines
-    void parse_lines();
+    void parse_lines(Program*);
     //line -> expr SEMICOLON
-    void parse_line();
-    //expr -> named
+    Expression* parse_line();
     //expr -> term
-    void parse_expr();
+    //expr -> name EQUALS term
+    Expression* parse_expr();
     //var -> ID
-    void parse_var();
-    //name -> AT var
-    void parse_name();
-    //named -> name EQUALS term
-    //named -> name EQUALS name
-    void parse_named();
+    Variable* parse_var();
+    //name -> AT ID
+    Name* parse_name();
     //atom -> var
     //atom -> name
-    void parse_atom();
+    Atom* parse_atom();
     //term -> atom
     //term -> LPAREN term RPAREN
     //term -> LCURLY LAMBDA var DOT term RCURLY
-    // term -> LBRACK term term RBRACK
-    void parse_term();
+    //term -> LBRACK term term RBRACK
+    Term* parse_term();
 
 
     //public interface
     public:
-    void parse();
+    Program* parse();
 };
 
 #endif

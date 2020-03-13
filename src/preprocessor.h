@@ -24,6 +24,8 @@ private:
     void preprocess();
     void applyAbstraction(std::vector<Token>&);
     void applyApplication(std::vector<Token>&, int, int);
+    void applyApplication(std::vector<Token>&);
+    int identifyParen(std::vector<Token>, int);
     void identifyTerm(std::vector<Token>, int, int&, int&);
 };
 
