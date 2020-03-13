@@ -44,7 +44,7 @@ void Preprocessor::preprocess() {
     readline(line);
 
     applyAbstraction(line);
-    applyApplication(line, 0);
+    applyApplication(line, 0, line.size()-1);
 
     //add the line to the buffer in reverse order
     for(int i = line.size() - 1; i >= 0; i--) {
@@ -132,13 +132,15 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
 
 //finds a term and then searches for the term next to it
 //once its found two terms, puts it in brackets
-void Preprocessor::applyApplication(std::vector<Token>& line, int start) {
+void Preprocessor::applyApplication(std::vector<Token>& line, int start, int end) {
 
     bool foundA = false;
     int startA = -1;
+    int endA = -1;
     bool foundB = false;
+    int startB = -1;
     int endB = -1;
-    for(int i = start; i < line.size(); i++) {
+    for(int i = start; i <= end; i++) {
         //temporary
         bool foundT = false;
         int startT = -1;
@@ -170,11 +172,13 @@ void Preprocessor::applyApplication(std::vector<Token>& line, int start) {
             if(!foundA) {
                 foundA = true;
                 startA = startT;
+                endA = endT;
                 i = endT;
             }
             //found A, havent found B yet, place here
             else if(foundA && !foundB) {
                 foundB = true;
+                startB = startT;
                 endB = endT;
             }
         }
@@ -199,16 +203,6 @@ void Preprocessor::applyApplication(std::vector<Token>& line, int start) {
         t.token_type = LBRACK;
         //calc position
         line.insert(line.begin() + startA, t);
-
-    }
-
-    //if we found A and B, search everything again
-    if(foundA && foundB) {
-        applyApplication(line, 0);
-    }
-    //if we found A and not B, search excluding the first of A
-    if(foundA && !foundB) {
-        applyApplication(line, startA+2);
     }
 
 }

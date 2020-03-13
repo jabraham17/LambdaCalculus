@@ -23,7 +23,7 @@ private:
     //preprocess a line of input
     void preprocess();
     void applyAbstraction(std::vector<Token>&);
-    void applyApplication(std::vector<Token>&, int);
+    void applyApplication(std::vector<Token>&, int, int);
     void identifyTerm(std::vector<Token>, int, int&, int&);
 };
 
