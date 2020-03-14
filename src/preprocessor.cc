@@ -43,15 +43,39 @@ void Preprocessor::preprocess() {
     std::vector<Token> line;
     readline(line);
 
-    applyAbstraction(line);
-    applyApplication(line);
+    std::vector<Token> name;
+    std::vector<Token> expr = line;
+
+    //if this is a named expr, we want to remove the name before we process
+    //we do this by finding equals and splitting around it
+    for(int i = 0; i < line.size(); i++) {
+        if(line[i].token_type == EQUALS) {
+            //this is named, split
+            name = sliceVector(line, 0, i);
+            expr = sliceVector(line, i+1, line.size()-1);
+            break;
+        }
+    }
+
+
+
+    applyAbstraction(expr);
+    applyApplication(expr);
+
+
+    //combine name and expr back together
+    std::vector<Token> processed;
+    for(auto t: name) processed.push_back(t);
+    for(auto t: expr) processed.push_back(t);
 
     //add the line to the buffer in reverse order
-    for(int i = line.size() - 1; i >= 0; i--) {
-        tokens.push_back(line[i]);
+    for(int i = processed.size() - 1; i >= 0; i--) {
+        tokens.push_back(processed[i]);
     }
 
 }
+
+
 //this function is recursive
 //once it sees a lambda it adds an open curly just before it
 //then goes through the line counting parenthesis
@@ -132,7 +156,6 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
 }
 
 void Preprocessor::applyApplication(std::vector<Token>& line) {
-
     line = applyApplicationToTerm(line);
 }
 

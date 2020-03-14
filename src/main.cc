@@ -25,8 +25,8 @@ int main (int argc, char* argv[])
     while(t.token_type != END_OF_FILE and t.token_type != ERROR) {
         t = pre.GetToken();
         t.Print();
-    }
-*/
+    }*/
+
     return 0;
 }
 

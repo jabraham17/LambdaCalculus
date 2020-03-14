@@ -74,7 +74,6 @@ cat - <(echo "##")
 Example program:
 ```
 @tru = $t. $f. t;
-@true = @tru;
 @fls = $t. $f. f;
 @and = $a. $b. a b @fls;
 @tru x y;
