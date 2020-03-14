@@ -5,7 +5,7 @@
 
 void Parser::syntax_error()
 {
-    std::cout << "SYNTAX ERROR !!!" << std::endl;
+    std::cout << "Syntax Error on line " << lexer.getLineNumber() << std::endl;
     exit(1);
 }
 

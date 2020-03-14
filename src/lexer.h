@@ -38,6 +38,7 @@ class LexicalAnalyzer {
     Token GetToken();
     Token Peek();
     TokenType UngetToken(Token);
+    int getLineNumber() {return line_no;};
     LexicalAnalyzer();
 
   private:

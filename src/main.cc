@@ -14,18 +14,19 @@ int main (int argc, char* argv[])
     }
 
     Parser parser;
-    Program* prog = parser.parse();
+    Program* prog = NULL;
+    prog = parser.parse();
     std::cout << *prog << std::endl;
 
 
-
-    /*Preprocessor pre;
+/*
+    Preprocessor pre;
     Token t = pre.Peek();
     while(t.token_type != END_OF_FILE and t.token_type != ERROR) {
         t = pre.GetToken();
         t.Print();
-    }*/
-
+    }
+*/
     return 0;
 }
 

@@ -5,10 +5,11 @@
 #include "lexer.h"
 #include <vector>
 #include "data/expression.h"
+#include "preprocessor.h"
 
 class Parser {
     private:
-    LexicalAnalyzer lexer;
+    Preprocessor lexer;
 
     void syntax_error();
     Token expect(TokenType expected_type);

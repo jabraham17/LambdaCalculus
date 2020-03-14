@@ -45,7 +45,6 @@ void Preprocessor::preprocess() {
 
     applyAbstraction(line);
     applyApplication(line);
-    //applyApplication(line, 0, line.size()-1);
 
     //add the line to the buffer in reverse order
     for(int i = line.size() - 1; i >= 0; i--) {
@@ -78,11 +77,11 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
             }
         }
         //already found lambda and lparen, increase count
-        if(foundLambda && t.token_type == LPAREN) {
+        if(foundLambda && (t.token_type == LPAREN || t.token_type == LBRACK)) {
             parenCount++;
         }
         //already found lambda and rparen, decrease count
-        if(foundLambda && t.token_type == RPAREN) {
+        if(foundLambda && (t.token_type == RPAREN || t.token_type == RBRACK)) {
             parenCount--;
         }
 
@@ -108,8 +107,9 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
         //not a real token, so no real line number
         t.line_no = -1;
 
+        auto position = line.begin() + right;
         //calc position
-        line.insert(line.begin() + right, t);
+        line.insert(position, t);
     }
     //if left is non negative, add it
     if(left >= 0) {
@@ -133,36 +133,238 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
 
 void Preprocessor::applyApplication(std::vector<Token>& line) {
 
-    //list of all seen parens
-    std::vector<std::pair<int, int>> parens;
-    for(int i = 0; i < line.size(); i++) {
+    line = applyApplicationToTerm(line);
+}
+
+//a term that is a sequence of tokens
+//apply to abstraction bodies
+//apply to parenthized terms
+//once the whole thing has been applied to, group the outer most stuff
+std::vector<Token> Preprocessor::applyApplicationToTerm(std::vector<Token> term) {
+
+
+    //apply to abstraction body
+    for(int i = 0; i < term.size(); i++) {
         //find the end index of the paren
-        int end = identifyParen(line, i);
+        int j = identifyAbstractionBody(term, i);
         //if its valid
-        if(end >= 0) {
-            parens.push_back(std::pair<int, int>(i, end));
+        if(j >= 0) {
+            //i is the dot and j is the rcurly
+            int start = i+1;
+            int end = j-1;
+            //get the abstraction
+            std::vector<Token> abs = sliceVector(term, start,end);
+            //apply application
+            abs = applyApplicationToTerm(abs);
+            //replace term
+            replaceRange(term, start, end, abs);
         }
     }
 
+    //apply to parenthized expressions
+    for(int i = 0; i < term.size(); i++) {
+        //find the end index of the paren
+        int j = identifyParen(term, i);
+        //if its valid
+        if(j >= 0) {
+            //i is the lparen and j is the rparen
+            int start = i+1;
+            int end = j-1;
+            //get the term
+            std::vector<Token> subTerm = sliceVector(term, start,end);
+            //apply application
+            subTerm = applyApplicationToTerm(subTerm);
+            //replace term
+            replaceRange(term, start, end, subTerm);
+        }
+    }
 
+    identifyAndApply(term);
+
+    return term;
 }
-int Preprocessor::identifyParen(std::vector<Token> line, int start) {
+
+void Preprocessor::identifyAndApply(std::vector<Token>& term) {
+    //now we identify and apply
+    bool foundA = false;
+    int startA = -1;
+    int endA = -1;
+    bool foundB = false;
+    int startB = -1;
+    int endB = -1;
+    for(int i = 0; i < term.size(); i++) {
+        //temporary
+        bool foundT = false;
+        int startT = -1;
+        int endT = -1;
+
+        //if its an AT followed by an ID, get the start and end
+        if(term[i].token_type == AT && i+1 < term.size() && term[i+1].token_type == ID) {
+            startT = i;
+            endT = i + 1;
+            foundT = true;
+        }
+            //if its an ID not preceded by AT, get the start and end
+        else if(term[i].token_type == ID && (i == 0 || (i-1 >= 0 && term[i-1].token_type != AT))) {
+            startT = i;
+            endT = i;
+            foundT = true;
+        }
+            //if its a kind of lbrace, determine its size
+        else if(term[i].token_type == LPAREN ||
+                term[i].token_type == LBRACK ||
+                term[i].token_type == LCURLY) {
+            int j = identifyTerm(term, i);
+            startT = i;
+            endT = j;
+            foundT = true;
+        }
+
+        //if we found something, determine where to put it
+        if(foundT) {
+            //havent found A yet, place here
+            if(!foundA) {
+                foundA = true;
+                startA = startT;
+                endA = endT;
+                i = endT;
+            }
+                //found A, havent found B yet, place here
+            else if(foundA && !foundB) {
+                foundB = true;
+                startB = startT;
+                endB = endT;
+            }
+        }
+
+        //if we have found A and B, break
+        if(foundA && foundB) break;
+    }
+
+    //if we found A and B, place braces at startA and endB
+    if(foundA && foundB) {
+        //make new token
+        Token t;
+        t.token_type = RBRACK;
+        t.lexeme = "";
+        //not a real token, so no real line number
+        t.line_no = -1;
+
+        //do right before left so that indexes arent screwed up
+        //calc position
+        term.insert(term.begin() + endB + 1, t);
+
+        t.token_type = LBRACK;
+        //calc position
+        term.insert(term.begin() + startA, t);
+
+        // we found at least two terms, need to call again
+        identifyAndApply(term);
+    }
+}
+
+//get a slice of a vector
+//start and end are inclusive
+std::vector<Token> Preprocessor::sliceVector(std::vector<Token> original, int start, int end) {
+    auto startIT = original.begin() + start;
+    auto endIT = original.begin() + end;
+
+    //we want end to be inclusive
+    //this constructor is [start, end)
+    //so we add one it endIT
+    std::vector<Token> slice(startIT, endIT+1);
+    return slice;
+}
+
+//replace a range in vector with another vector
+//start and end are inclusive
+void Preprocessor::replaceRange(std::vector<Token>& original, int start, int end, std::vector<Token> replacement) {
+    auto startIT = original.begin() + start;
+    auto endIT = original.begin() + end;
+
+    //now we have three vectors to link up
+    std::vector<Token> modified;
+    //append front slice
+    for(auto it = original.begin(); it != startIT; it++) {
+        modified.push_back(*it);
+    }
+    //append replacement slice
+    for(auto it = replacement.begin(); it != replacement.end(); it++) {
+        modified.push_back(*it);
+    }
+    //append back slice
+    //endIT is inclusive, so we need to add 1
+    for(auto it = endIT + 1; it != original.end(); it++) {
+        modified.push_back(*it);
+    }
+
+    //modify the origal
+    original = modified;
+}
+
+int Preprocessor::identifyTerm(std::vector<Token> line, int start) {
     int end = -1;
     if(line[start].token_type == LPAREN) {
+        end = identifyParen(line, start);
+    }
+    else if(line[start].token_type == LBRACK) {
+        end = identifyBody(line, start, LBRACK, RBRACK);
+    }
+    else if(line[start].token_type == LCURLY) {
+        end = identifyBody(line, start, LCURLY, RCURLY);
+    }
+    return end;
+}
+
+int Preprocessor::identifyBody(std::vector<Token> line, int start, TokenType left, TokenType right) {
+    int end = -1;
+    if(line[start].token_type == left) {
         int count = 1;
-        //count++ if lparen, count-- if rparen, when count is 0 we have a term
+        //count++ if left, count-- if right, when count is 0 we have a term
         int j = start + 1;
         while(line[j].token_type != SEMICOLON &&
               line[j].token_type != END_OF_FILE &&
               line[j].token_type != ERROR) {
 
-            if(line[j].token_type == LPAREN) count++;
-            if(line[j].token_type == RPAREN) count--;
+            if(line[j].token_type == left) count++;
+            if(line[j].token_type == right) count--;
             if(count == 0) break;
             j++;
         }
-        if(line[j].token_type == RPAREN) {
+        if(line[j].token_type == right) {
             //j now points to closing paren
+            end = j;
+        }
+    }
+    return end;
+}
+
+
+//start is the open parent
+//the return is the closing curly
+int Preprocessor::identifyParen(std::vector<Token> line, int start) {
+    return identifyBody(line, start, LPAREN, RPAREN);
+}
+//start is the dot preceding an abstraction
+//the return is the curly closing the abstraction
+int Preprocessor::identifyAbstractionBody(std::vector<Token> line, int start) {
+    int end = -1;
+    if(line[start].token_type == DOT) {
+
+        int count = 1;
+        //count++ if lcurly, count-- if rcurly, when count is 0 we have a term
+        int j = start + 1;
+        while(line[j].token_type != SEMICOLON &&
+              line[j].token_type != END_OF_FILE &&
+              line[j].token_type != ERROR) {
+
+            if(line[j].token_type == LCURLY) count++;
+            if(line[j].token_type == RCURLY) count--;
+            if(count == 0) break;
+            j++;
+        }
+        if(line[j].token_type == RCURLY) {
+            //j now points to closing curly
             end = j;
         }
     }

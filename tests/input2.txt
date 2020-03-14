@@ -1,1 +1,8 @@
-@fls = {$x. x};
+@h = ([@h ($y. x)]);
+@a = [[b ($c. [[d $x. e] f])] x];
+
+
+
+//go through, if any open paren has more than 2 simple atoms, run it recusivly
+(x x) (x x) (x x (x x) x) x
+(x x) (x x) (x x (x x) x) x
