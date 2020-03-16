@@ -68,5 +68,33 @@
    "bin/symboltable.o"
   ],
   "file": "src/data/symboltable.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/data/Application.cc",
+   "-o",
+   "bin/Application.o"
+  ],
+  "file": "src/data/Application.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/data/Abstraction.cc",
+   "-o",
+   "bin/Abstraction.o"
+  ],
+  "file": "src/data/Abstraction.cc"
  }
 ]

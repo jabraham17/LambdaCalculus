@@ -5,6 +5,7 @@
 #include "Name.h"
 #include <string>
 #include <ostream>
+#include <sstream>
 
 class Atom {
     private:
@@ -18,6 +19,19 @@ class Atom {
     Atom(int id, Name* name): id(id), type(NAME), name(name), variable(NULL) {}
     Atom(int id, Variable* var): id(id), type(VAR), name(NULL), variable(var) {}
     ~Atom(){}
+
+    int ID() {
+        return id;
+    }
+
+    std::string toJSON() {
+        std::stringstream s;
+        s << "\"atom\":{";
+        if(type == NAME) s << name->toJSON();
+        else if(type == VAR) s << variable->toJSON();
+        s << "}";
+        return s.str();
+    }
 
     friend std::ostream& operator<<(std::ostream& out, const Atom& a) {
 

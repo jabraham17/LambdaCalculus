@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ostream>
+#include <sstream>
 
 #include "Application.h"
 #include "Abstraction.h"
@@ -27,6 +28,24 @@ class Term {
     Term(int id, Abstraction* abs, bool paren): id(id), type(ABS), paren(paren), atom(NULL), abstraction(abs), application(NULL) {}
     Term(int id, Application* app, bool paren): id(id), type(APP), paren(paren), atom(NULL), abstraction(NULL), application(app) {}
     ~Term(){}
+
+
+    std::string toJSON() {
+        std::stringstream s;
+        s << "\"term\":{";
+        if(hasParen()) s << "\"parentheses\": true,";
+
+        if(type == ATOM) s << atom->toJSON();
+        else if(type == ABS) s << abstraction->toJSON();
+        else if(type == APP) s << application->toJSON();
+        s << "}";
+        return s.str();
+    }
+
+
+    int ID() {
+        return id;
+    }
 
     void addParen() { paren = true; }
     bool hasParen() {return paren; }

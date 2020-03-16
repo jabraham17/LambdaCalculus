@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -g -std=c++11
 LDFLAGS=
 EXTENSION= cc
-SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc
+SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Application.cc Abstraction.cc
 SOURCE_FOLDER= src
 OBJECTS = $(patsubst %.$(EXTENSION),$(OBJECT_FOLDER)/%.o,$(SOURCES))
 OBJECT_FOLDER=bin
@@ -30,7 +30,12 @@ DATA_HEADERS=Abstraction.h Application.h Term.h Atom.h Expression.h Name.h Varia
 DATA_HEADERS_PATH= $(patsubst %,$(SOURCE_FOLDER)/data/%,$(DATA_HEADERS))
 
 $(OBJECT_FOLDER)/symboltable.o: $(SOURCE_FOLDER)/data/symboltable.cc $(SOURCE_FOLDER)/data/symboltable.h $(DATA_HEADERS_PATH)
-	echo $(DATA_HEADERS_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECT_FOLDER)/Application.o: $(SOURCE_FOLDER)/data/Application.cc $(DATA_HEADERS_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECT_FOLDER)/Abstraction.o: $(SOURCE_FOLDER)/data/Abstraction.cc $(DATA_HEADERS_PATH)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: mkdirs

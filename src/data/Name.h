@@ -4,6 +4,7 @@
 #include "Expression.h"
 #include <string>
 #include <ostream>
+#include <sstream>
 
 class Expression;
 class Name {
@@ -19,6 +20,17 @@ class Name {
     ~Name(){}
 
     void setExpression(Expression* expr) {expression = expr;}
+
+    int ID() {
+        return id;
+    }
+
+    std::string toJSON() {
+        std::stringstream s;
+        s << "\"name\":\"" << name << "\"";
+        return s.str();
+    }
+
 
     friend bool operator==(const Name& lhs, const std::string& rhs) { return lhs.name == rhs; }
     friend bool operator!=(const Name& lhs, const std::string& rhs) { return !(lhs.name == rhs); }

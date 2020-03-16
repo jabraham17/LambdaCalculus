@@ -35,8 +35,6 @@ void Parser::parse_lines() {
     //add the expression to the program
     program->statements.push_back(expr);
 
-    // TODO: add the expression and all its compoennts to the symbol table
-
     //a line either starts with an named expr or a term
     //a named expr starts with an AT
     //a term starts with an ID, AT, LPAREN, LCURLY, or LBRACK

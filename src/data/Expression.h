@@ -4,12 +4,11 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
 #include <ostream>
+#include <sstream>
 
 #include "Name.h"
 #include "Term.h"
-#include "Expression.h"
 
 class Expression {
     private:
@@ -23,6 +22,21 @@ class Expression {
     Expression(int id, Name* name, Term* term): id(id), hasName(true), name(name), term(term) {}
     Expression(int id, Term* term): id(id), hasName(false), name(NULL), term(term) {}
     ~Expression(){}
+
+    std::string toJSON() {
+        std::stringstream s;
+        s << "\"expression\":{";
+        s << name->toJSON();
+        s << ",";
+        s << term->toJSON();
+        s << "}";
+        return s.str();
+    }
+
+
+    int ID() {
+        return id;
+    }
 
     friend std::ostream& operator<<(std::ostream& out, const Expression& e) {
 

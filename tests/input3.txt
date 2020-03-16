@@ -3,3 +3,5 @@
 @and = $a. $b. a b @fls;
 @tru x y;
 @fls x y;
+a (b c);
+(x);

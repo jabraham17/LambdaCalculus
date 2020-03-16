@@ -1,0 +1,206 @@
+{
+  "expressions": [
+    {
+      "expression": {
+        "name": "tru",
+        "term": {
+          "abstraction": {
+            "variable": "t",
+            "term": {
+              "abstraction": {
+                "variable": "f",
+                "term": {
+                  "atom": {
+                    "variable": "t"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "expression": {
+        "name": "fls",
+        "term": {
+          "abstraction": {
+            "variable": "t",
+            "term": {
+              "abstraction": {
+                "variable": "f",
+                "term": {
+                  "atom": {
+                    "variable": "f"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "expression": {
+        "name": "and",
+        "term": {
+          "abstraction": {
+            "variable": "a",
+            "term": {
+              "abstraction": {
+                "variable": "b",
+                "term": {
+                  "application": [
+                    {
+                      "term": {
+                        "application": [
+                          {
+                            "term": {
+                              "atom": {
+                                "variable": "a"
+                              }
+                            }
+                          },
+                          {
+                            "term": {
+                              "atom": {
+                                "variable": "b"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "term": {
+                        "atom": {
+                          "name": "fls"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "expression": {
+        "term": {
+          "application": [
+            {
+              "term": {
+                "application": [
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "tru"
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "x"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "term": {
+                "atom": {
+                  "name": "y"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "expression": {
+        "term": {
+          "application": [
+            {
+              "term": {
+                "application": [
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "fls"
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "x"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "term": {
+                "atom": {
+                  "name": "y"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "expression": {
+        "term": {
+          "application": [
+            {
+              "term": {
+                "atom": {
+                  "name": "a"
+                }
+              }
+            },
+            {
+              "term": {
+                "parentheses": true,
+                "application": [
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "b"
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "atom": {
+                        "variable": "c"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "expression": {
+        "term": {
+          "parentheses": true,
+          "atom": {
+            "variable": "x"
+          }
+        }
+      },
+    }
+  ]
+}
