@@ -23,7 +23,8 @@ input  -> lines
 lines  -> line
 lines  -> line lines
 line   -> expr SEMICOLON
-expr   -> name EQUALS term
+line   -> define SEMICOLON
+define -> name EQUALS expr
 expr   -> term
 var    -> ID
 name   -> AT ID
@@ -60,6 +61,7 @@ FIRST(input) = { ID, AT, LPAREN, LCURLY, LBRACK }
 FIRST(lines) = { ID, AT, LPAREN, LCURLY, LBRACK }
 FIRST(line) = { ID, AT, LPAREN, LCURLY, LBRACK }
 FIRST(expr) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(define) = { AT }
 FIRST(name) = { AT }
 FIRST(term) = { ID, AT, LPAREN, LCURLY, LBRACK }
 FIRST(var) = { ID }
@@ -73,6 +75,7 @@ FOLLOW(input) = { $ }
 FOLLOW(lines) = { $ }
 FOLLOW(line) = { $, ID, AT, LPAREN, LCURLY, LBRACK }
 FOLLOW(expr) = { SEMICOLON }
+FOLLOW(define) = { SEMICOLON }
 FOLLOW(name) = { SEMICOLON, EQUALS, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
 FOLLOW(term) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
 FOLLOW(var) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, DOT, RCURLY, LBRACK, RBRACK }

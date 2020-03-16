@@ -31,9 +31,7 @@ void Parser::parse_input() {
 //lines -> line
 //lines -> line lines
 void Parser::parse_lines() {
-    Expression* expr = parse_line();
-    //add the expression to the program
-    program->statements.push_back(expr);
+    parse_line();
 
     //a line either starts with an named expr or a term
     //a named expr starts with an AT
@@ -48,16 +46,11 @@ void Parser::parse_lines() {
     }
 }
 //line -> expr ;
-Expression* Parser::parse_line() {
-    Expression* expr = parse_expr();
-    expect(SEMICOLON);
-    return expr;
-}
-//expr -> name EQUALS term
-//expr -> term
-Expression* Parser::parse_expr() {
-    //name starts with an AT
-    //term stars with an ID, AT, LPAREN, LCURLY, or LBRACK
+//line -> define ;
+void Parser::parse_line() {
+
+    //define starts with an AT
+    //expr stars with an ID, AT, LPAREN, LCURLY, or LBRACK
     //need to distinguish, will need three tokens
 
     Token t1 = preprocessor.getToken();
@@ -68,30 +61,45 @@ Expression* Parser::parse_expr() {
     preprocessor.ungetToken(t2);
     preprocessor.ungetToken(t1);
 
-    //if t3 is EQUALS, we have a named expr
+    //if t3 is EQUALS, we have a define
     if(t1.token_type == AT && t3.token_type == EQUALS) {
-        Name* name = parse_name();
-        expect(EQUALS);
-        Term* term = parse_term();
-        Expression* expr = program->table->createExpression(name, term);
-        //now we know name's expression
-        name->setExpression(expr);
-        return expr;
+        parse_define();
+        //define is already stored in symbol table, dont need to do anything further
+        expect(SEMICOLON);
+
     }
     else if(t1.token_type == ID ||
             t1.token_type == AT ||
             t1.token_type == LPAREN ||
             t1.token_type == LCURLY ||
             t1.token_type == LBRACK) {
-        Term* term = parse_term();
-        return program->table->createExpression(term);
+
+        Expression* expr = parse_expr();
+        expect(SEMICOLON);
+
+        //add the expression to the list of statements
+        program->statements.push_back(expr);
+
     }
     else {
         //nothing else can be expr, error
         syntax_error();
     }
+}
+//expr -> term
+Expression* Parser::parse_expr() {
+    Term* term = parse_term();
+    Expression* expr = program->table->createExpression(term);
+    return expr;
+}
+//define -> name EQUALS expr
+Define* Parser::parse_define() {
+    Name* name = parse_name();
+    expect(EQUALS);
+    Expression* expr = parse_expr();
 
-    return NULL;
+    Define* d = program->table->createDefine(name, expr);
+    return d;
 }
 //var -> ID
 Variable* Parser::parse_var() {

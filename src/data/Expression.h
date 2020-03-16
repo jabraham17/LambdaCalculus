@@ -13,21 +13,16 @@
 class Expression {
     private:
     int id;
-    bool hasName;
-    Name* name;
     Term* term;
 
 
     public:
-    Expression(int id, Name* name, Term* term): id(id), hasName(true), name(name), term(term) {}
-    Expression(int id, Term* term): id(id), hasName(false), name(NULL), term(term) {}
+    Expression(int id, Term* term): id(id), term(term) {}
     ~Expression(){}
 
     std::string toJSON() {
         std::stringstream s;
         s << "\"expression\":{";
-        s << name->toJSON();
-        s << ",";
         s << term->toJSON();
         s << "}";
         return s.str();
@@ -40,9 +35,6 @@ class Expression {
 
     friend std::ostream& operator<<(std::ostream& out, const Expression& e) {
 
-        if(e.hasName) {
-            out << *(e.name) << " = ";
-        }
         out << *(e.term);
 
         return out;
@@ -51,7 +43,3 @@ class Expression {
 
 #endif
 
-
-
-//list of expressions
-//expressions either named or unnamed

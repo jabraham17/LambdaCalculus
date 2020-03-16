@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include "parser.h"
+#include "data/Program.h"
+#include "json_helper.h"
 #include "preprocessor.h"
 #include <iostream>
 
@@ -17,8 +19,10 @@ int main (int argc, char* argv[])
     Program* prog = NULL;
     parser.parse();
     prog = parser.getProgram();
-    std::cout << *prog << std::endl;
+    //std::cout << *prog << std::endl;
 
+    //std::cout << prog->createASTNode() << std::endl;
+    std::cout << JSON::pretty(prog->createASTNode()) << std::endl;
 
 /*
     Preprocessor pre;

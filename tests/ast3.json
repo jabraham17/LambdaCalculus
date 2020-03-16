@@ -1,17 +1,19 @@
 {
-  "expressions": [
+  "definitions": [
     {
-      "expression": {
+      "define": {
         "name": "tru",
-        "term": {
-          "abstraction": {
-            "variable": "t",
-            "term": {
-              "abstraction": {
-                "variable": "f",
-                "term": {
-                  "atom": {
-                    "variable": "t"
+        "expression": {
+          "term": {
+            "abstraction": {
+              "variable": "t",
+              "term": {
+                "abstraction": {
+                  "variable": "f",
+                  "term": {
+                    "atom": {
+                      "variable": "t"
+                    }
                   }
                 }
               }
@@ -21,17 +23,19 @@
       }
     },
     {
-      "expression": {
+      "define": {
         "name": "fls",
-        "term": {
-          "abstraction": {
-            "variable": "t",
-            "term": {
-              "abstraction": {
-                "variable": "f",
-                "term": {
-                  "atom": {
-                    "variable": "f"
+        "expression": {
+          "term": {
+            "abstraction": {
+              "variable": "t",
+              "term": {
+                "abstraction": {
+                  "variable": "f",
+                  "term": {
+                    "atom": {
+                      "variable": "f"
+                    }
                   }
                 }
               }
@@ -41,51 +45,55 @@
       }
     },
     {
-      "expression": {
+      "define": {
         "name": "and",
-        "term": {
-          "abstraction": {
-            "variable": "a",
-            "term": {
-              "abstraction": {
-                "variable": "b",
-                "term": {
-                  "application": [
-                    {
-                      "term": {
-                        "application": [
-                          {
-                            "term": {
-                              "atom": {
-                                "variable": "a"
+        "expression": {
+          "term": {
+            "abstraction": {
+              "variable": "a",
+              "term": {
+                "abstraction": {
+                  "variable": "b",
+                  "term": {
+                    "application": [
+                      {
+                        "term": {
+                          "application": [
+                            {
+                              "term": {
+                                "atom": {
+                                  "variable": "a"
+                                }
+                              }
+                            },
+                            {
+                              "term": {
+                                "atom": {
+                                  "variable": "b"
+                                }
                               }
                             }
-                          },
-                          {
-                            "term": {
-                              "atom": {
-                                "variable": "b"
-                              }
-                            }
+                          ]
+                        }
+                      },
+                      {
+                        "term": {
+                          "atom": {
+                            "name": "fls"
                           }
-                        ]
-                      }
-                    },
-                    {
-                      "term": {
-                        "atom": {
-                          "name": "fls"
                         }
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
               }
             }
           }
         }
       }
-    },
+    }
+  ],
+  "statements": [
     {
       "expression": {
         "term": {
@@ -96,7 +104,7 @@
                   {
                     "term": {
                       "atom": {
-                        "variable": "tru"
+                        "name": "tru"
                       }
                     }
                   },
@@ -113,7 +121,7 @@
             {
               "term": {
                 "atom": {
-                  "name": "y"
+                  "variable": "y"
                 }
               }
             }
@@ -131,7 +139,7 @@
                   {
                     "term": {
                       "atom": {
-                        "variable": "fls"
+                        "name": "fls"
                       }
                     }
                   },
@@ -148,7 +156,7 @@
             {
               "term": {
                 "atom": {
-                  "name": "y"
+                  "variable": "y"
                 }
               }
             }
@@ -163,7 +171,7 @@
             {
               "term": {
                 "atom": {
-                  "name": "a"
+                  "variable": "a"
                 }
               }
             },
@@ -200,7 +208,7 @@
             "variable": "x"
           }
         }
-      },
+      }
     }
   ]
 }

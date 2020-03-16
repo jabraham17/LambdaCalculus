@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Expression.h"
+#include "Define.h"
 #include "Application.h"
 #include "Abstraction.h"
 #include "Term.h"
@@ -19,14 +20,14 @@ class SymbolTable {
     
     public:
 
-    SymbolTable(): expressions(), applications(), abstractions(), terms(), atoms(), variables(), names() {}
+    SymbolTable(): defines(), expressions(), applications(), abstractions(), terms(), atoms(), variables(), names() {}
 
     //check if a name already exists, if it does return the one that already exists
     Name* exists(std::string);
 
 
     //create blanks elements
-    Expression* createExpression(Name*, Term*);
+    Define* createDefine(Name*, Expression*);
     Expression* createExpression(Term*);
     Application* createApplication(Term*, Term*);
     Abstraction* createAbstraction(Variable*, Term*);
@@ -36,7 +37,6 @@ class SymbolTable {
     Atom* createAtom(Name*);
     Atom* createAtom(Variable*);
     Variable* createVariable(std::string);
-    Name* createName(std::string, Expression*);
     Name* createName(std::string);
 
 
@@ -45,6 +45,9 @@ class SymbolTable {
     int id = 0;
     int ID() { return id++; }
 
+    //TODO: add getters for these
+public:
+    std::vector<Define*> defines;
     std::vector<Expression*> expressions;
     std::vector<Application*> applications;
     //TODO: abstratcuons will identify binding when built

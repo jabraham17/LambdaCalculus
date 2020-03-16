@@ -6,6 +6,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/main.cc",
    "-o",
@@ -20,6 +21,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/lexer.cc",
    "-o",
@@ -34,6 +36,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/parser.cc",
    "-o",
@@ -48,6 +51,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/preprocessor.cc",
    "-o",
@@ -62,6 +66,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/data/symboltable.cc",
    "-o",
@@ -76,6 +81,7 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/data/Application.cc",
    "-o",
@@ -90,11 +96,27 @@
    "-Wall",
    "-g",
    "-std=c++11",
+   "-Werror",
    "-c",
    "src/data/Abstraction.cc",
    "-o",
    "bin/Abstraction.o"
   ],
   "file": "src/data/Abstraction.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-c",
+   "src/data/Term.cc",
+   "-o",
+   "bin/Term.o"
+  ],
+  "file": "src/data/Term.cc"
  }
 ]

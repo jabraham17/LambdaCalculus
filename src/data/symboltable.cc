@@ -15,10 +15,10 @@ Name* SymbolTable::exists(std::string s) {
 }
 
 
-Expression* SymbolTable::createExpression(Name* n, Term* t) {
-    Expression* expr = new Expression(ID(), n, t);
-    expressions.push_back(expr);
-    return expr;
+Define* SymbolTable::createDefine(Name* n, Expression* e) {
+    Define* d = new Define(ID(), n, e);
+    defines.push_back(d);
+    return d;
 }
 Expression* SymbolTable::createExpression(Term* t) {
     Expression* expr = new Expression(ID(), t);
@@ -66,18 +66,15 @@ Variable* SymbolTable::createVariable(std::string s) {
     return var;
 }
 //only create a new one if it doesnt already exist
-Name* SymbolTable::createName(std::string s, Expression* e) {
+Name* SymbolTable::createName(std::string s) {
     Name* name = exists(s);
 
     //doesnt exist
     if(name == NULL) {
-        name = new Name(ID(), s, e);
+        name = new Name(ID(), s);
         names.push_back(name);
     }
 
     return name;
-}
-Name* SymbolTable::createName(std::string s) {
-    return createName(s, NULL);
 }
 

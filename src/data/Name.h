@@ -1,25 +1,19 @@
 #ifndef __NAME_H__
 #define __NAME_H__
 
-#include "Expression.h"
 #include <string>
 #include <ostream>
 #include <sstream>
 
-class Expression;
 class Name {
     private:
     int id;
     //the name of the named expression
     std::string name;
-    //the expression the name refers to
-    Expression* expression;
 
     public:
-    Name(int id, std::string name, Expression* expr): id(id), name(name), expression(expr) {}
+    Name(int id, std::string name): id(id), name(name) {}
     ~Name(){}
-
-    void setExpression(Expression* expr) {expression = expr;}
 
     int ID() {
         return id;

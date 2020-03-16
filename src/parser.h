@@ -37,10 +37,12 @@ class Parser {
     //lines -> line lines
     void parse_lines();
     //line -> expr SEMICOLON
-    Expression* parse_line();
+    //line -> define SEMICOLON
+    void parse_line();
     //expr -> term
-    //expr -> name EQUALS term
     Expression* parse_expr();
+    //define -> name EQUALS expr
+    Define* parse_define();
     //var -> ID
     Variable* parse_var();
     //name -> AT ID
