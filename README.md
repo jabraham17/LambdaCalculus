@@ -35,7 +35,8 @@ term   -> LCURLY LAMBDA var DOT term RCURLY
 term   -> LBRACK term term RBRACK
 ```
 
-The brackets and curly braces are not required. These are added by the Preprocessor automatically
+This is the official grammar. However, curly braces (`{ }`) and square brackets (`[ ]`) are generally ommitted.
+These are added by the preprocessor to solve disambiguation rules
 
 ### perl one-liner
 
@@ -55,13 +56,27 @@ cat - <(echo "##")
 ### FIRST Sets
 
 ```
-
+FIRST(input) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(lines) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(line) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(expr) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(name) = { AT }
+FIRST(term) = { ID, AT, LPAREN, LCURLY, LBRACK }
+FIRST(var) = { ID }
+FIRST(atom) = { ID, AT }
 ```
 
 ### FOLLOW Sets
 
 ```
-
+FOLLOW(input) = { $ }
+FOLLOW(lines) = { $ }
+FOLLOW(line) = { $, ID, AT, LPAREN, LCURLY, LBRACK }
+FOLLOW(expr) = { SEMICOLON }
+FOLLOW(name) = { SEMICOLON, EQUALS, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
+FOLLOW(term) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
+FOLLOW(var) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, DOT, RCURLY, LBRACK, RBRACK }
+FOLLOW(atom) = { SEMICOLON, ID, AT, LPAREN, RPAREN, LCURLY, RCURLY, LBRACK, RBRACK }
 ```
 
 ### Examples
@@ -109,45 +124,25 @@ Output: `term -> [ term term ]`
 #### Examples
 
 Input: `x x x x`  
-2: `[x x] x x`  
-2: `[[x x] x] x`  
-2: `[[[x x] x] x]`  
+Output: `[[[x x] x] x]`  
 
 Input: `x (x x) x`  
-2: `[x (x x)] x`  
-2: `[[x (x x)] x]`  
-2: `[[x ([x x])] x]`  
+Output: `[[x ([x x])] x]`  
 
 Input: `$x. x`  
-1: `{$x. x}`  
+Output: `{$x. x}`  
 
 Input: `($x. x x) x x`  
-1: `({$x. x x}) x x`  
-2: `[({$x. x x}) x] x`  
-2: `[[({$x. x x}) x] x]`  
+Output: `[[({$x. x x}) x] x]`  
 
 Input: `$x. x x`  
-1: `{$x. x x}`  
-2: `{$x. [x x]}`  
+Output: `{$x. [x x]}`  
 
 Input: `x $x. x x`  
-1. `x {$x. x x}`  
-2. `[x {$x. x x}]`  
-2. `[x {$x. [x x]}]`  
+Output: `[x {$x. [x x]}]`  
 
 Input: `($x. x) x (x $x. x x ($x. x x) x) x x`  
-1. `({$x. x}) x (x $x. x x ($x. x x) x) x x`  
-1. `({$x. x}) x (x {$x. x x ($x. x x) x}) x x`  
-1. `({$x. x}) x (x {$x. x x ({$x. x x}) x}) x x`  
-2. `[({$x. x}) x] (x {$x. x x ({$x. x x}) x}) x x`  
-2. `[[({$x. x}) x] (x {$x. x x ({$x. x x}) x})] x x`  
-2. `[[({$x. x}) x] ([x {$x. x x ({$x. x x}) x}])] x x`  
-2. `[[({$x. x}) x] ([x {$x. [x x] ({$x. x x}) x}])] x x`  
-2. `[[({$x. x}) x] ([x {$x. [[x x] ({$x. x x})] x}])] x x`  
-2. `[[({$x. x}) x] ([x {$x. [[x x] ({$x. [x x]})] x}])] x x`  
-2. `[[({$x. x}) x] ([x {$x. [[[x x] ({$x. [x x]})] x]}])] x x`  
-2. `[[[({$x. x}) x] ([x {$x. [[[x x] ({$x. [x x]})] x]}])] x] x`  
-2. `[[[[({$x. x}) x] ([x {$x. [[[x x] ({$x. [x x]})] x]}])] x] x]`  
+Output: `[[[[({$x. x}) x] ([x {$x. [[[x x] ({$x. [x x]})] x]}])] x] x]`  
 
 
 ## Binding
