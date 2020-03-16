@@ -7,14 +7,21 @@
 
 class Expression;
 class Name {
-public:
+    private:
+    int id;
     //the name of the named expression
     std::string name;
     //the expression the name refers to
     Expression* expression;
 
-    Name(std::string name, Expression* expr): name(name), expression(expr) {}
+    public:
+    Name(int id, std::string name, Expression* expr): id(id), name(name), expression(expr) {}
     ~Name(){}
+
+    void setExpression(Expression* expr) {expression = expr;}
+
+    friend bool operator==(const Name& lhs, const std::string& rhs) { return lhs.name == rhs; }
+    friend bool operator!=(const Name& lhs, const std::string& rhs) { return !(lhs.name == rhs); }
 
     friend std::ostream& operator<<(std::ostream& out, const Name& n) {
 

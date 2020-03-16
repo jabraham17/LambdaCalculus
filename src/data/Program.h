@@ -8,9 +8,14 @@
 #include "symboltable.h"
 
 class Program {
-public:
+    private:
+    //TODO: make these private and add accesors
+    public:
     std::vector<Expression*> statements;
     SymbolTable* table;
+
+    public:
+    Program(): statements(), table(new SymbolTable()) {}
     ~Program() {
         delete(table);
     }
@@ -22,6 +27,9 @@ public:
         }
         return out;
     }
+
+    //TODO
+    std::string createASTNode();
 };
 
 #endif

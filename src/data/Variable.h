@@ -5,9 +5,12 @@
 #include <ostream>
 
 class Variable {
-public:
+    private:
+    int id;
     std::string name;
-    Variable(std::string name): name(name) {}
+
+    public:
+    Variable(int id, std::string name): id(id), name(name) {}
     ~Variable(){}
 
     friend std::ostream& operator<<(std::ostream& out, const Variable& v) {

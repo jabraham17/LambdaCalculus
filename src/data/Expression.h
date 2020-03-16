@@ -12,12 +12,16 @@
 #include "Expression.h"
 
 class Expression {
-    public:
+    private:
+    int id;
     bool hasName;
     Name* name;
     Term* term;
-    Expression(Name* name, Term* term): hasName(true), name(name), term(term) {}
-    Expression(Term* term): hasName(false), name(NULL), term(term) {}
+
+
+    public:
+    Expression(int id, Name* name, Term* term): id(id), hasName(true), name(name), term(term) {}
+    Expression(int id, Term* term): id(id), hasName(false), name(NULL), term(term) {}
     ~Expression(){}
 
     friend std::ostream& operator<<(std::ostream& out, const Expression& e) {

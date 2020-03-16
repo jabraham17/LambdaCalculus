@@ -15,7 +15,8 @@ int main (int argc, char* argv[])
 
     Parser parser;
     Program* prog = NULL;
-    prog = parser.parse();
+    parser.parse();
+    prog = parser.getProgram();
     std::cout << *prog << std::endl;
 
 

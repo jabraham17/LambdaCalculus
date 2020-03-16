@@ -11,16 +11,19 @@
 class Term;
 std::ostream& operator<<(std::ostream&, const Term&);
 class Abstraction {
-        public:
-        Variable* variable;
-        Term* term;
-        Abstraction(Variable* var, Term* term): variable(var), term(term) {}
-        ~Abstraction(){}
-        friend std::ostream& operator<<(std::ostream& out, const Abstraction& a) {
+    private:
+    int id;
+    Variable* variable;
+    Term* term;
 
-            out << "{ $" << *(a.variable) << ". " << *(a.term) << " }";
-            return out;
-        }
+    public:
+    Abstraction(int id, Variable* var, Term* term): id(id), variable(var), term(term) {}
+    ~Abstraction(){}
+    friend std::ostream& operator<<(std::ostream& out, const Abstraction& a) {
+
+        out << "{ $" << *(a.variable) << ". " << *(a.term) << " }";
+        return out;
+    }
 };
 
 

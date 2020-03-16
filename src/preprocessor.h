@@ -10,14 +10,21 @@
 class Preprocessor {
 
 public:
-    Token GetToken();
-    Token Peek();
-    TokenType UngetToken(Token);
+    Token getToken();
+    Token peek();
+    TokenType ungetToken(Token);
     int getLineNumber() {return lexer.getLineNumber();};
+
+    //default constructor
+    Preprocessor(): tokens(), lexer() {}
+    //constructor with a stream, make it
+    explicit Preprocessor(std::istream& in): tokens(), lexer(in) {}
+    //constructor with a lexer, make it
+    explicit Preprocessor(Lexer lexer): tokens(), lexer(lexer) {}
 
 private:
     std::vector<Token> tokens;
-    LexicalAnalyzer lexer;
+    Lexer lexer;
 
     //reads a full line from the lexer
     void readline(std::vector<Token>&);

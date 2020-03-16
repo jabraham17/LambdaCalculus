@@ -12,18 +12,29 @@
 std::ostream& operator<<(std::ostream&, const Abstraction&);
 std::ostream& operator<<(std::ostream&, const Application&);
 class Term {
-public:
+    private:
+    int id;
     enum Type { ATOM=0, ABS, APP};
     Type type;
+    //whether the use decided to put parentheses around this
+    bool paren;
     Atom* atom;
     Abstraction* abstraction;
     Application* application;
-    Term(Atom* atom): type(ATOM), atom(atom), abstraction(NULL), application(NULL) {}
-    Term(Abstraction* abs): type(ABS), atom(NULL), abstraction(abs), application(NULL) {}
-    Term(Application* app): type(APP), atom(NULL), abstraction(NULL), application(app) {}
+
+    public:
+    Term(int id, Atom* atom, bool paren): id(id), type(ATOM), paren(paren), atom(atom), abstraction(NULL), application(NULL) {}
+    Term(int id, Abstraction* abs, bool paren): id(id), type(ABS), paren(paren), atom(NULL), abstraction(abs), application(NULL) {}
+    Term(int id, Application* app, bool paren): id(id), type(APP), paren(paren), atom(NULL), abstraction(NULL), application(app) {}
     ~Term(){}
 
+    void addParen() { paren = true; }
+    bool hasParen() {return paren; }
+
+
     friend std::ostream& operator<<(std::ostream& out, const Term& t) {
+
+        if(t.paren) out << "(";
 
         if(t.type == ATOM) {
             out << "<" << *(t.atom) << ">";
@@ -34,6 +45,9 @@ public:
         else if(t.type == APP) {
             out << *(t.application);
         }
+
+        if(t.paren) out << ")";
+
         return out;
     }
 };

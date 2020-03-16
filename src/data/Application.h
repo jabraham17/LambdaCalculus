@@ -9,10 +9,13 @@
 class Term;
 std::ostream& operator<<(std::ostream&, const Term&);
 class Application {
-public:
+    private:
+    int id;
     Term* a;
     Term* b;
-    Application(Term* a, Term* b): a(a), b(b) {}
+
+    public:
+    Application(int id, Term* a, Term* b): id(id), a(a), b(b) {}
     ~Application(){}
     friend std::ostream& operator<<(std::ostream& out, const Application& a) {
         out << "[ " << *(a.a) << " " << *(a.b) << " ]";

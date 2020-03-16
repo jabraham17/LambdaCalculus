@@ -2,7 +2,7 @@
 #include "preprocessor.h"
 #include <utility>
 
-Token Preprocessor::GetToken() {
+Token Preprocessor::getToken() {
     //preprocessing so we get some tokens
     if(tokens.empty()) {
         preprocess();
@@ -12,12 +12,12 @@ Token Preprocessor::GetToken() {
     tokens.pop_back();
     return t;
 }
-Token Preprocessor::Peek() {
-    Token t = GetToken();
-    UngetToken(t);
+Token Preprocessor::peek() {
+    Token t = getToken();
+    ungetToken(t);
     return t;
 }
-TokenType Preprocessor::UngetToken(Token t) {
+TokenType Preprocessor::ungetToken(Token t) {
     tokens.push_back(t);;
     return t.token_type;
 }
@@ -25,14 +25,14 @@ TokenType Preprocessor::UngetToken(Token t) {
 void Preprocessor::readline(std::vector<Token>& line) {
     //hold the next token
     Token tmp;
-    tmp = lexer.GetToken();
+    tmp = lexer.getToken();
     //while not the end of the line, the end of the file, or an error
     while(tmp.token_type != SEMICOLON &&
           tmp.token_type != END_OF_FILE &&
           tmp.token_type != ERROR) {
         //add it and get a new one
         line.push_back(tmp);
-        tmp = lexer.GetToken();
+        tmp = lexer.getToken();
     }
     //add the last gotten token
     line.push_back(tmp);

@@ -21,20 +21,6 @@
    "-g",
    "-std=c++11",
    "-c",
-   "src/inputbuf.cc",
-   "-o",
-   "bin/inputbuf.o"
-  ],
-  "file": "src/inputbuf.cc"
- },
- {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
-  "arguments": [
-   "g++",
-   "-Wall",
-   "-g",
-   "-std=c++11",
-   "-c",
    "src/lexer.cc",
    "-o",
    "bin/lexer.o"
@@ -68,5 +54,19 @@
    "bin/preprocessor.o"
   ],
   "file": "src/preprocessor.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-c",
+   "src/data/symboltable.cc",
+   "-o",
+   "bin/symboltable.o"
+  ],
+  "file": "src/data/symboltable.cc"
  }
 ]

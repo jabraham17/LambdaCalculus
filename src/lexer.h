@@ -4,11 +4,12 @@
 
 #include <vector>
 #include <string>
+#include <istream>
+#include <iostream>
+#include <ostream>
 
-#include "inputbuf.h"
 
-
-typedef enum { END_OF_FILE=0,
+enum TokenType { END_OF_FILE=0,
                DOT,
                LPAREN,
                RPAREN,
@@ -22,33 +23,51 @@ typedef enum { END_OF_FILE=0,
                LCURLY,
                RCURLY,
                ERROR
-             } TokenType;
+             };
 
 class Token {
-  public:
-    void Print();
+    public:
 
     std::string lexeme;
     TokenType token_type;
     int line_no;
+
+    Token(std::string lexeme, TokenType token_type, int line_no): lexeme(lexeme), token_type(token_type), line_no(line_no) {}
+    Token(): lexeme(""), token_type(ERROR), line_no(-1) {}
+
+    static const std::string types[];
+    friend std::ostream& operator<<(std::ostream& out, const Token& t) {
+        out << "{" << Token::types[t.token_type] << ",";
+        if(!t.lexeme.empty()) out << t.lexeme << ",";
+        out << t.line_no << "}";
+        return out;
+    }
 };
 
-class LexicalAnalyzer {
-  public:
-    Token GetToken();
-    Token Peek();
-    TokenType UngetToken(Token);
-    int getLineNumber() {return line_no;};
-    LexicalAnalyzer();
+class Lexer {
+    public:
+    Token getToken();
+    Token peek();
+    TokenType ungetToken(Token);
+    int getLineNumber() {return line_number;};
+    explicit Lexer(std::istream& input): input(input), line_number(1), tokens(), input_buffer() {}
+    Lexer(): input(std::cin), line_number(1), tokens(), input_buffer() {}
 
-  private:
+    private:
+    std::istream& input;
+    int line_number;
     std::vector<Token> tokens;
-    int line_no;
-    Token tmp;
-    InputBuffer input;
+    std::vector<char> input_buffer;
 
-    bool SkipSpace();
-    Token ScanId();
+    //input buffer code
+    bool endOfInput();
+    char peekChar();
+    void ungetChar(char);
+    char getChar();
+
+
+    void skipWhiteSpace();
+    Token scanId();
 };
 
 #endif
