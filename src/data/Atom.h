@@ -10,7 +10,10 @@
 class Atom {
     private:
     int id;
+    public: //needs to be public so we can compare
     enum Type { NAME=0, VAR };
+    private:
+    public: //TODO: make getters and setters
     Type type;
     Name* name;
     Variable* variable;

@@ -1,7 +1,7 @@
-@eq = ;
-@neq = ;
-@lt = ;
-@gt = ;
-@lteq = ;
-@gteq = ;
+#@eq = ;
+#@neq = ;
+#@lt = ;
+#@gt = ;
+#@lteq = ;
+#@gteq = ;
 @iszero = $n. n ($x. @fls) @tru;

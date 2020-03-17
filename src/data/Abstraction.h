@@ -14,6 +14,7 @@ std::ostream& operator<<(std::ostream&, const Term&);
 class Abstraction {
     private:
     int id;
+    public: //TODO: make getters and setters
     Variable* variable;
     Term* term;
 
@@ -30,7 +31,7 @@ class Abstraction {
 
     friend std::ostream& operator<<(std::ostream& out, const Abstraction& a) {
 
-        out << "{ $" << *(a.variable) << ". " << *(a.term) << " }";
+        out << "$" << *(a.variable) << ". " << *(a.term);
         return out;
     }
 };

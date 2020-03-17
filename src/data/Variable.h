@@ -28,6 +28,9 @@ class Variable {
         out << v.name;
         return out;
     }
+
+    friend bool operator==(const Variable& lhs, const Variable& rhs) { return lhs.name == rhs.name; }
+    friend bool operator!=(const Variable& lhs, const Variable& rhs) { return !(lhs == rhs); }
 };
 
 #endif

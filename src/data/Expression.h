@@ -13,6 +13,7 @@
 class Expression {
     private:
     int id;
+    public: //TODO: make getters
     Term* term;
 
 

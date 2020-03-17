@@ -17,7 +17,10 @@ std::ostream& operator<<(std::ostream&, const Application&);
 class Term {
     private:
     int id;
+    public: //the type needs to be public
     enum Type { ATOM=0, ABS, APP};
+    private:
+    public: //TODO: make getters and setters
     Type type;
     //whether the use decided to put parentheses around this
     bool paren;
@@ -35,12 +38,16 @@ class Term {
     std::string toJSON();
 
 
-    int ID() {
-        return id;
-    }
+    int ID() {return id;}
+    Type getType() {return type;}
 
     void addParen() { paren = true; }
     bool hasParen() {return paren; }
+
+    bool isBetaRedex();
+    friend void applyBetaRedex(Term*&);
+    friend void replaceVariable(Term*&, Variable*, Term*);
+    friend Abstraction* findAbstraction(Term*);
 
 
     friend std::ostream& operator<<(std::ostream& out, const Term& t) {
@@ -48,7 +55,7 @@ class Term {
         if(t.paren) out << "(";
 
         if(t.type == ATOM) {
-            out << "<" << *(t.atom) << ">";
+            out << *(t.atom);
         }
         else if(t.type == ABS) {
             out << *(t.abstraction);

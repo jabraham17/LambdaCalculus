@@ -118,5 +118,20 @@
    "bin/Term.o"
   ],
   "file": "src/data/Term.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-c",
+   "src/data/Program.cc",
+   "-o",
+   "bin/Program.o"
+  ],
+  "file": "src/data/Program.cc"
  }
 ]

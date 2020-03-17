@@ -19,10 +19,25 @@ int main (int argc, char* argv[])
     Program* prog = NULL;
     parser.parse();
     prog = parser.getProgram();
-    std::cout << *prog << std::endl;
 
-    //std::cout << prog->createASTNode() << std::endl;
-    std::cout << JSON::pretty(prog->createASTNode()) << std::endl;
+    //read the library
+    prog->readLibrary("library/boolean");
+    prog->readLibrary("library/arithmetic");
+    prog->readLibrary("library/number");
+    prog->readLibrary("library/pair");
+    prog->readLibrary("library/test");
+    prog->readLibrary("library/recursive_helper");
+
+
+    //print the statements
+    std::cout << *prog << std::endl;
+    if(prog->statements[0]->term->isBetaRedex()) {
+        std::cout << "found redex" << std::endl;
+        applyBetaRedex(prog->statements[0]->term);
+        std::cout << *prog << std::endl;
+    }
+
+    //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 
 /*
     Preprocessor pre;
