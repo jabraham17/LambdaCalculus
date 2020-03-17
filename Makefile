@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall -g -std=c++11 -Werror
+CFLAGS=-Wall -g -std=c++11 -Werror -Wextra
 LDFLAGS=
 EXTENSION= cc
 SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Application.cc Abstraction.cc Term.cc Program.cc
@@ -8,7 +8,7 @@ OBJECTS = $(patsubst %.$(EXTENSION),$(OBJECT_FOLDER)/%.o,$(SOURCES))
 OBJECT_FOLDER=bin
 TARGET=a.out
 
-all: $(TARGET) mkdirs
+all: mkdirs $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@

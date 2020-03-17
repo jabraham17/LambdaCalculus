@@ -24,7 +24,7 @@ class Program {
     }
     friend std::ostream& operator<<(std::ostream& out, const Program& p) {
         std::string sep;
-        for(int i = 0; i < p.statements.size(); i++) {
+        for(size_t i = 0; i < p.statements.size(); i++) {
             out << sep << (i+1) << ": " << *(p.statements[i]);
             sep = '\n';
         }

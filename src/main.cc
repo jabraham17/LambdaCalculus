@@ -8,7 +8,7 @@
 #include "preprocessor.h"
 #include <iostream>
 
-int main (int argc, char* argv[])
+int main()
 {
     //if a debug input var is set, redirect cin to it
     if(const char* redirected_stdin = std::getenv("__DEBUG_INPUT__")) {

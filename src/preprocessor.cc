@@ -48,7 +48,7 @@ void Preprocessor::preprocess() {
 
     //if this is a named expr, we want to remove the name before we process
     //we do this by finding equals and splitting around it
-    for(int i = 0; i < line.size(); i++) {
+    for(size_t i = 0; i < line.size(); i++) {
         if(line[i].token_type == EQUALS) {
             //this is named, split
             name = sliceVector(line, 0, i);
@@ -69,7 +69,7 @@ void Preprocessor::preprocess() {
     for(auto t: expr) processed.push_back(t);
 
     //add the line to the buffer in reverse order
-    for(int i = processed.size() - 1; i >= 0; i--) {
+    for(size_t i = processed.size() - 1; i >= 0; i--) {
         tokens.push_back(processed[i]);
     }
 
@@ -86,7 +86,7 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
     int parenCount = 0;
     int left = -1;
     int right = -1;
-    for(int i = 0; i < line.size(); i++) {
+    for(size_t i = 0; i < line.size(); i++) {
         Token t = line[i];
         //we haven't found a lambda, searching for it
         if(!foundLambda && t.token_type == LAMBDA) {
@@ -167,7 +167,7 @@ std::vector<Token> Preprocessor::applyApplicationToTerm(std::vector<Token> term)
 
 
     //apply to abstraction body
-    for(int i = 0; i < term.size(); i++) {
+    for(size_t i = 0; i < term.size(); i++) {
         //find the end index of the paren
         int j = identifyAbstractionBody(term, i);
         //if its valid
@@ -185,7 +185,7 @@ std::vector<Token> Preprocessor::applyApplicationToTerm(std::vector<Token> term)
     }
 
     //apply to parenthized expressions
-    for(int i = 0; i < term.size(); i++) {
+    for(size_t i = 0; i < term.size(); i++) {
         //find the end index of the paren
         int j = identifyParen(term, i);
         //if its valid
@@ -215,7 +215,7 @@ void Preprocessor::identifyAndApply(std::vector<Token>& term) {
     bool foundB = false;
     int startB = -1;
     int endB = -1;
-    for(int i = 0; i < term.size(); i++) {
+    for(size_t i = 0; i < term.size(); i++) {
         //temporary
         bool foundT = false;
         int startT = -1;

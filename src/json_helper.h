@@ -30,7 +30,7 @@ namespace JSON {
         int indent = 0;
         bool inQuote = false;
         std::string delim = "  ";
-        for(int i = 0; i < str.size(); i++) {
+        for(size_t i = 0; i < str.size(); i++) {
 
             //if in quote and quote isnt escaped, swap inQuote state
             if(str[i] == '"' && i-1 >=0 && str[i] != '\\') {
