@@ -17,10 +17,9 @@ class Parser {
     explicit Parser(Lexer lexer): preprocessor(lexer), program(new Program()) {}
     explicit Parser(Preprocessor preprocessor): preprocessor(preprocessor), program(new Program()) {}
 
+    //methods to compile the program
     void parse();
     Program* getProgram() {return program;}
-    //TODO
-    std::string getAST_JSON();
 
     private:
     Preprocessor preprocessor;

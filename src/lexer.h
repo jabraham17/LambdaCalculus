@@ -67,6 +67,7 @@ class Lexer {
 
 
     void skipWhiteSpace();
+    void ignoreComment();
     Token scanId();
 };
 

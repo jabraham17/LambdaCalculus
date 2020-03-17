@@ -1,0 +1,3 @@
+@pair = $f.$s.$b. b f s;
+@fst = $p. p @tru;
+@snd = $p. p @fls;

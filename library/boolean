@@ -1,0 +1,9 @@
+@tru = $t.$f. t;
+@tru = $t.$f. f;
+@and = $a.$b. a b @fls;
+@or = $a.$b. a @tru b;
+@not = $a. a @fls @tru;
+@nand = @not @and;
+@nor = @not @or;
+@xor = $a.$b. a (b @fls @tru) b;
+@xnor = @not @xor;

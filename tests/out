@@ -1,0 +1,132 @@
+1: [ [ [ <x> ({ $x. [ [ <x> ({ $x. <x> }) ] <x> ] }) ] ({ $x. [ [ <x> ({ $x. <x> }) ] <x> ] }) ] <x> ]
+{
+  "definitions": [
+    
+  ],
+  "statements": [
+    {
+      "expression": {
+        "term": {
+          "application": [
+            {
+              "term": {
+                "application": [
+                  {
+                    "term": {
+                      "application": [
+                        {
+                          "term": {
+                            "atom": {
+                              "variable": "x"
+                            }
+                          }
+                        },
+                        {
+                          "term": {
+                            "parentheses": true,
+                            "abstraction": {
+                              "variable": "x",
+                              "term": {
+                                "application": [
+                                  {
+                                    "term": {
+                                      "application": [
+                                        {
+                                          "term": {
+                                            "atom": {
+                                              "variable": "x"
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "term": {
+                                            "parentheses": true,
+                                            "abstraction": {
+                                              "variable": "x",
+                                              "term": {
+                                                "atom": {
+                                                  "variable": "x"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "term": {
+                                      "atom": {
+                                        "variable": "x"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "term": {
+                      "parentheses": true,
+                      "abstraction": {
+                        "variable": "x",
+                        "term": {
+                          "application": [
+                            {
+                              "term": {
+                                "application": [
+                                  {
+                                    "term": {
+                                      "atom": {
+                                        "variable": "x"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "term": {
+                                      "parentheses": true,
+                                      "abstraction": {
+                                        "variable": "x",
+                                        "term": {
+                                          "atom": {
+                                            "variable": "x"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "term": {
+                                "atom": {
+                                  "variable": "x"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "term": {
+                "atom": {
+                  "variable": "x"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

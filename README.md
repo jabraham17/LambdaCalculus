@@ -37,7 +37,9 @@ term   -> LBRACK term term RBRACK
 ```
 
 This is the official grammar. However, curly braces (`{ }`) and square brackets (`[ ]`) are generally ommitted.
-These are added by the preprocessor to solve disambiguation rules
+These are added by the preprocessor to solve disambiguation rules.
+
+Comments are delimited by a hash (`#`), anything after them on the line is ignored.
 
 ### perl one-liner
 
@@ -165,3 +167,82 @@ AND
 - `x ($y. y z ($x. x y))`
     - free: first `x`, `z`
     - bound: both `y`'s bound to `$y`, second `x` bound to `$x`
+    
+
+## Predefined Expressions
+
+Several files are loaded at initial run with predefined files. These files are located in the local directory under `library`.
+If one wishes to predefine their own file, they can add or modify and of the files located in this directory.
+Another method is to redefine functions. This can be done by simply overwriting them.
+
+### Standard Library
+
+## boolean
+
+| Function | Description |
+| -------- | ----------- |
+| tru      |             |
+| fls      |             |
+| and      |             |
+| or       |             |
+| not      |             |
+| nand     |             |
+| nor      |             |
+| xor      |             |
+| xnor     |             |
+
+## test
+
+| Function | Description |
+| -------- | ----------- |
+| eq       |             |
+| neq      |             |
+| lt       |             |
+| gt       |             |
+| lteq     |             |
+| gteq     |             |
+| iszero   |             |
+
+
+## recursive_helper
+
+| Function | Description |
+| -------- | ----------- |
+| fix      |             |
+
+## number
+
+| Function | Description |
+| -------- | ----------- |
+| 0        |             |
+| 1        |             |
+| 2        |             |
+| 3        |             |
+| 4        |             |
+| 5        |             |
+| 6        |             |
+| 7        |             |
+| 8        |             |
+| 9        |             |
+| 10       |             |
+
+## arithmetic
+
+| Function | Description |
+| -------- | ----------- |
+| add      |             |
+| sub      |             |
+| pred     |             |
+| next     |             |
+| succ     |             |
+| mult     |             |
+
+## pair
+
+| Function | Description |
+| -------- | ----------- |
+| pair     |             |
+| fst      |             |
+| snd      |             |
+
+

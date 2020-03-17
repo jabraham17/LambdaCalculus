@@ -27,8 +27,17 @@ const std::string types[] = { "END_OF_FILE",
                       "ERROR"
                     };
 
-void Lexer::skipWhiteSpace()
-{
+void Lexer::ignoreComment() {
+    //get a new char
+    char c = getChar();
+
+    //while not eof and not end of line
+    while(!endOfInput() && c !='\n') {
+        c = getChar();
+    }
+}
+
+void Lexer::skipWhiteSpace() {
     //get a new char
     char c = getChar();
 
@@ -43,15 +52,14 @@ void Lexer::skipWhiteSpace()
 
 }
 
-Token Lexer::scanId()
-{
+Token Lexer::scanId() {
     char c = getChar();
 
     //token to return
     Token t;
 
     //if its a char
-    if(isalpha(c)) {
+    if(isalnum(c)) {
         std::string lexeme = "";
         while(!endOfInput() && isalnum(c)) {
             lexeme += c;
@@ -66,8 +74,7 @@ Token Lexer::scanId()
     return t;
 }
 
-TokenType Lexer::ungetToken(Token t)
-{
+TokenType Lexer::ungetToken(Token t) {
     tokens.push_back(t);;
     return t.token_type;
 }
@@ -111,9 +118,11 @@ Token Lexer::getToken()
         case ';': t.token_type = SEMICOLON; return t;
         case '=': t.token_type = EQUALS; return t;
         case '@': t.token_type = AT; return t;
+        //ignore comments
+        case '#': ignoreComment(); return getToken();
         default:
             //if alpha, get the id
-            if(isalpha(c)) {
+            if(isalnum(c)) {
                 ungetChar(c);
                 return scanId();
             }

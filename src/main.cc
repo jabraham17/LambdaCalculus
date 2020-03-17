@@ -19,7 +19,7 @@ int main (int argc, char* argv[])
     Program* prog = NULL;
     parser.parse();
     prog = parser.getProgram();
-    //std::cout << *prog << std::endl;
+    std::cout << *prog << std::endl;
 
     //std::cout << prog->createASTNode() << std::endl;
     std::cout << JSON::pretty(prog->createASTNode()) << std::endl;

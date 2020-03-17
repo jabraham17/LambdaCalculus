@@ -1,0 +1,6 @@
+@add = $m.$n. m @succ n;
+@sub = $m.$n. n @pred m;
+@prd = $n. @fst (n @next (@pair @0 @0));
+@nxt = $p. @pair (snd p) (@succ (@snd p));
+@scc = $n.$s.$z. s (n s z);
+@mult = $m.$n. m (@succ n) @0;
