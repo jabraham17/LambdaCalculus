@@ -19,7 +19,7 @@ $(OBJECT_FOLDER)/main.o: $(SOURCE_FOLDER)/main.cc $(SOURCE_FOLDER)/parser.h $(SO
 $(OBJECT_FOLDER)/lexer.o: $(SOURCE_FOLDER)/lexer.cc $(SOURCE_FOLDER)/lexer.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJECT_FOLDER)/parser.o: $(SOURCE_FOLDER)/parser.cc $(SOURCE_FOLDER)/parser.h $(SOURCE_FOLDER)/data/program.h $(SOURCE_FOLDER)/data/symboltable.h $(DATA_HEADERS_PATH)
+$(OBJECT_FOLDER)/parser.o: $(SOURCE_FOLDER)/parser.cc $(SOURCE_FOLDER)/parser.h $(SOURCE_FOLDER)/data/Program.h $(SOURCE_FOLDER)/data/symboltable.h $(DATA_HEADERS_PATH)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJECT_FOLDER)/preprocessor.o: $(SOURCE_FOLDER)/preprocessor.cc $(SOURCE_FOLDER)/preprocessor.h
