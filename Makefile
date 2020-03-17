@@ -8,7 +8,7 @@ OBJECTS = $(patsubst %.$(EXTENSION),$(OBJECT_FOLDER)/%.o,$(SOURCES))
 OBJECT_FOLDER=bin
 TARGET=a.out
 
-all: $(TARGET)
+all: $(TARGET) mkdirs
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
