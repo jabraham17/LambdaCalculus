@@ -13,7 +13,7 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-$(OBJECT_FOLDER)/main.o: $(SOURCE_FOLDER)/main.cc $(SOURCE_FOLDER)/parser.h $(SOURCE_FOLDER)/data/program.h $(SOURCE_FOLDER)/json_helper.h
+$(OBJECT_FOLDER)/main.o: $(SOURCE_FOLDER)/main.cc $(SOURCE_FOLDER)/parser.h $(SOURCE_FOLDER)/data/Program.h $(SOURCE_FOLDER)/json_helper.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJECT_FOLDER)/lexer.o: $(SOURCE_FOLDER)/lexer.cc $(SOURCE_FOLDER)/lexer.h
