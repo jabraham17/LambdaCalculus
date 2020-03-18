@@ -13,50 +13,36 @@ std::string Term::toJSON() {
     return s.str();
 }
 
-//if this term is an application and the application is a redex, then this term is a redex
+//if this term is an application and the application's a term is an abstraction
 bool Term::isBetaRedex() {
-    return type == APP && application->isBetaRedex();
+
+    return type == APP && this->application->a->getType() == Term::ABS;
 }
 
 //if this is a valid redex, we can reduce it
-//the body of the applications 'a' term will be the new term
-//the replacement is the applications 'b' term
-//TODO: does the right thing, just leaves behind the application var it replaced
-//TODO: fix, does it wrong
+//this is a valid redex so self is an application with 'a' as an abstraction
+//therefore we can get the variable and the term from it
+//the replacement term, tprime, is the 'b' of the abstraction
 void applyBetaRedex(Term*& self) {
 
     //the abstraction we are replacing
-    Abstraction* abs = findAbstraction(self->application->a);
+    Abstraction* abs = self->application->a->abstraction;
 
     //what variable we are replacing
     Variable* replace = abs->variable;
     //the t term, must have paren
-    Term* t = self->application->a;
-    t->hasParen();
+    Term* t = abs->term;
+    t->addParen();
 
-    //the t' term, also must have paren
+    //the t' term
     Term* tprime = self->application->b;
-    tprime->hasParen();
+    //if this isnt a term add paren
+    if(tprime->getType() != Term::ATOM) tprime->addParen();
 
     //replace all terms
     replaceVariable(t, replace, tprime);
 
     self = t;
-}
-
-//find the lowest leftmost abstraction in a series of applications
-Abstraction* findAbstraction(Term* self) {
-    if(self->getType() == Term::Type::ABS) {
-        return self->abstraction;
-    }
-    //find the buried type in an appplciation
-    else if(self->getType() == Term::Type::APP) {
-        return findAbstraction(self->application->a);
-    }
-    //not an app or an abs
-    else {
-        return NULL;
-    }
 }
 
 //for all the varaiables in t, replace them with tprime(tp)

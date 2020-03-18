@@ -24,7 +24,7 @@ class Program {
     }
     friend std::ostream& operator<<(std::ostream& out, const Program& p) {
         std::string sep;
-        for(size_t i = 0; i < p.statements.size(); i++) {
+        for(int i = 0; i < (int)p.statements.size(); i++) {
             out << sep << (i+1) << ": " << *(p.statements[i]);
             sep = '\n';
         }
@@ -32,6 +32,15 @@ class Program {
     }
 
     std::string toJSON();
+
+    //apply reduction in normal order
+    //true if reduction could be applied
+    bool betaReduceNormalOrder();
+
+    //apply reduction in call by value
+    //true if reduction could be applied
+    bool betaReduceCallByValue();
+
 
     void readLibrary(std::string);
 

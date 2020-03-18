@@ -31,11 +31,8 @@ int main()
 
     //print the statements
     std::cout << *prog << std::endl;
-    if(prog->statements[0]->term->isBetaRedex()) {
-        std::cout << "found redex" << std::endl;
-        applyBetaRedex(prog->statements[0]->term);
-        std::cout << *prog << std::endl;
-    }
+
+    while(prog->betaReduceNormalOrder());
 
     //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 

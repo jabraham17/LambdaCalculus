@@ -48,7 +48,7 @@ void Preprocessor::preprocess() {
 
     //if this is a named expr, we want to remove the name before we process
     //we do this by finding equals and splitting around it
-    for(size_t i = 0; i < line.size(); i++) {
+    for(int i = 0; i < (int)line.size(); i++) {
         if(line[i].token_type == EQUALS) {
             //this is named, split
             name = sliceVector(line, 0, i);
@@ -69,7 +69,7 @@ void Preprocessor::preprocess() {
     for(auto t: expr) processed.push_back(t);
 
     //add the line to the buffer in reverse order
-    for(size_t i = processed.size() - 1; i >= 0; i--) {
+    for(int i = (int)processed.size() - 1; i >= 0; i--) {
         tokens.push_back(processed[i]);
     }
 
@@ -86,7 +86,7 @@ void Preprocessor::applyAbstraction(std::vector<Token>& line) {
     int parenCount = 0;
     int left = -1;
     int right = -1;
-    for(size_t i = 0; i < line.size(); i++) {
+    for(int i = 0; i < (int)line.size(); i++) {
         Token t = line[i];
         //we haven't found a lambda, searching for it
         if(!foundLambda && t.token_type == LAMBDA) {
@@ -167,7 +167,7 @@ std::vector<Token> Preprocessor::applyApplicationToTerm(std::vector<Token> term)
 
 
     //apply to abstraction body
-    for(size_t i = 0; i < term.size(); i++) {
+    for(int i = 0; i < (int)term.size(); i++) {
         //find the end index of the paren
         int j = identifyAbstractionBody(term, i);
         //if its valid
@@ -185,7 +185,7 @@ std::vector<Token> Preprocessor::applyApplicationToTerm(std::vector<Token> term)
     }
 
     //apply to parenthized expressions
-    for(size_t i = 0; i < term.size(); i++) {
+    for(int i = 0; i < (int)term.size(); i++) {
         //find the end index of the paren
         int j = identifyParen(term, i);
         //if its valid
@@ -215,14 +215,14 @@ void Preprocessor::identifyAndApply(std::vector<Token>& term) {
     bool foundB = false;
     int startB = -1;
     int endB = -1;
-    for(size_t i = 0; i < term.size(); i++) {
+    for(int i = 0; i < (int)term.size(); i++) {
         //temporary
         bool foundT = false;
         int startT = -1;
         int endT = -1;
 
         //if its an AT followed by an ID, get the start and end
-        if(term[i].token_type == AT && i+1 < term.size() && term[i+1].token_type == ID) {
+        if(term[i].token_type == AT && i+1 < (int)term.size() && term[i+1].token_type == ID) {
             startT = i;
             endT = i + 1;
             foundT = true;
@@ -393,148 +393,3 @@ int Preprocessor::identifyAbstractionBody(std::vector<Token> line, int start) {
     }
     return end;
 }
-
-//finds a term and then searches for the term next to it
-//once its found two terms, puts it in brackets
-/*
-void Preprocessor::applyApplication(std::vector<Token>& line, int start, int end) {
-
-    bool foundA = false;
-    int startA = -1;
-    int endA = -1;
-    bool foundB = false;
-    int startB = -1;
-    int endB = -1;
-    for(int i = start; i <= end; i++) {
-        //temporary
-        bool foundT = false;
-        int startT = -1;
-        int endT = -1;
-
-        //if its an AT followed by an ID, get the start and end
-        if(line[i].token_type == AT && i+1 < line.size() && line[i+1].token_type == ID) {
-            startT = i;
-            endT = i + 1;
-            foundT = true;
-        }
-        //if its an ID not preceded by AT, get the start and end
-        else if(line[i].token_type == ID && (i == 0 || (i-1 >= 0 && line[i-1].token_type != AT))) {
-            startT = i;
-            endT = i;
-            foundT = true;
-        }
-        //if its a kind of lbrace, determine its size
-        else if(line[i].token_type == LPAREN ||
-                line[i].token_type == LBRACK ||
-                line[i].token_type == LCURLY) {
-            identifyTerm(line, i, startT, endT);
-            foundT = true;
-        }
-
-        //if we found something, determine where to put it
-        if(foundT) {
-            //havent found A yet, place here
-            if(!foundA) {
-                foundA = true;
-                startA = startT;
-                endA = endT;
-                i = endT;
-            }
-            //found A, havent found B yet, place here
-            else if(foundA && !foundB) {
-                foundB = true;
-                startB = startT;
-                endB = endT;
-            }
-        }
-
-        //if we have found A and B, break
-        if(foundA && foundB) break;
-    }
-
-    //if we found A and B, place braces at startA and endB
-    if(foundA && foundB) {
-        //make new token
-        Token t;
-        t.token_type = RBRACK;
-        t.lexeme = "";
-        //not a real token, so no real line number
-        t.line_no = -1;
-
-        //di right before left so that indexes arent screwed up
-        //calc position
-        line.insert(line.begin() + endB + 1, t);
-
-        t.token_type = LBRACK;
-        //calc position
-        line.insert(line.begin() + startA, t);
-    }
-
-}
-
-//identify the start and end index of a term
-//term -> ( x ) | [ x ] | { x }
-//x is anything
-//start index and end index are first and last of something inclusive
-// they include the bracing for CURLY and PAREN, not for BRACK
-//i is start of where to begin searching
-void Preprocessor::identifyTerm(std::vector<Token> line, int i, int& start, int& end) {
-    //if i is lparen, find the matching rparen and set start and end
-    if(line[i].token_type == LPAREN) {
-        start = i;
-        int count = 1;
-        //count++ if lparen, count-- if rparen, when count is 0 we have a term
-        int j = i + 1;
-        while(line[j].token_type != SEMICOLON &&
-              line[j].token_type != END_OF_FILE &&
-              line[j].token_type != ERROR) {
-
-            if(line[j].token_type == LPAREN) count++;
-            if(line[j].token_type == RPAREN) count--;
-            if(count == 0) break;
-            j++;
-        }
-        //j now points to closing paren
-        end = j;
-    }
-    //if i is lbrack, find the matching rbrack and set start and end
-    else if(line[i].token_type == LBRACK) {
-        start = i + 1;
-        int count = 1;
-        //count++ if lbrack, count-- if rbrack, when count is 0 we have a term
-        int j = i + 1;
-        while(line[j].token_type != SEMICOLON &&
-              line[j].token_type != END_OF_FILE &&
-              line[j].token_type != ERROR) {
-
-            if(line[j].token_type == LBRACK) count++;
-            if(line[j].token_type == RBRACK) count--;
-            if(count == 0) break;
-            j++;
-        }
-        //j now points to closing brack
-        end = j - 1;
-    }
-    //if i is lcurly, find the matching rcurly and set start and end
-    else if(line[i].token_type == LCURLY) {
-        start = i;
-        int count = 1;
-        //count++ if lcurly, count-- if rcurly, when count is 0 we have a term
-        int j = i + 1;
-        while(line[j].token_type != SEMICOLON &&
-              line[j].token_type != END_OF_FILE &&
-              line[j].token_type != ERROR) {
-
-            if(line[j].token_type == LCURLY) count++;
-            if(line[j].token_type == RCURLY) count--;
-            if(count == 0) break;
-            j++;
-        }
-        //j now points to closing curly
-        end = j;
-    }
-    //couldnt find anything
-    else {
-        start = end = -1;
-    }
-}*/

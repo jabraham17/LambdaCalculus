@@ -47,7 +47,6 @@ class Term {
     bool isBetaRedex();
     friend void applyBetaRedex(Term*&);
     friend void replaceVariable(Term*&, Variable*, Term*);
-    friend Abstraction* findAbstraction(Term*);
 
 
     friend std::ostream& operator<<(std::ostream& out, const Term& t) {

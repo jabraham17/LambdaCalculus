@@ -61,3 +61,17 @@ void Program::readLibrary(std::string file) {
         this->library.push_back(d);
     }
 }
+
+
+//apply reduction in normal order
+//true if reduction could be applied
+bool Program::betaReduceNormalOrder() {
+    return false;
+}
+
+//apply reduction in call by value
+//true if reduction could be applied
+bool Program::betaReduceCallByValue() {
+
+    return false;
+}

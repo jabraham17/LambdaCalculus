@@ -1,5 +1,0 @@
-1: ($x. x ($x. x) x ($x. x) x) y z
-2: $new. @pair @tru (@pair new (@pair @empty @empty))
-found redex
-1: ($x. z ($x. z) z ($x. z) z) y
-2: $new. @pair @tru (@pair new (@pair @empty @empty))

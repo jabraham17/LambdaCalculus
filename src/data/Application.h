@@ -27,7 +27,6 @@ class Application {
     int ID() {return id;}
 
     std::string toJSON();
-    bool isBetaRedex();
 
     friend std::ostream& operator<<(std::ostream& out, const Application& a) {
         out << *(a.a) << " " << *(a.b);

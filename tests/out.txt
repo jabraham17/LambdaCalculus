@@ -1,0 +1,61 @@
+1: ($x. $y. x y) w z
+{
+  "expression": {
+    "term": {
+      "application": [
+        {
+          "term": {
+            "beta-redex": true,
+            "application": [
+              {
+                "term": {
+                  "parentheses": true,
+                  "abstraction": {
+                    "variable": "x",
+                    "term": {
+                      "abstraction": {
+                        "variable": "y",
+                        "term": {
+                          "application": [
+                            {
+                              "term": {
+                                "atom": {
+                                  "variable": "x"
+                                }
+                              }
+                            },
+                            {
+                              "term": {
+                                "atom": {
+                                  "variable": "y"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "term": {
+                  "atom": {
+                    "variable": "w"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "term": {
+            "atom": {
+              "variable": "z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
