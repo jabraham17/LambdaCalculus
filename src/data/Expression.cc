@@ -26,8 +26,6 @@
  * T X X  outer
  *
  */
-
-
 //find the leftmost outermost redex
 Term** findRedex(Term** term) {
 
@@ -59,20 +57,23 @@ Term** findRedex(Term** term) {
 //apply reduction in normal order
 //true if reduction could be applied
 void Expression::betaReduceNormalOrder() {
+    while(betaReduceNormalOrderStep());
+}
 
+
+bool Expression::betaReduceNormalOrderStep() {
     //get a redex
     Term** redex = findRedex(&this->term);
 
     //if its NULL, no more redexs
-    if(redex == NULL) return;
+    if(redex == NULL) return false;
 
     //eval the redex
     applyBetaRedex(*redex);
 
-    //call on expression again
-    betaReduceNormalOrder();
-
+    return true;
 }
+
 
 void findRedexsNotInAbstraction(Term** term, std::vector<Term**>& redexs) {
     //not a abstraction and is a redex, add it
@@ -87,8 +88,13 @@ void findRedexsNotInAbstraction(Term** term, std::vector<Term**>& redexs) {
 }
 
 //apply reduction in call by value
-//true if reduction could be applied
 void Expression::betaReduceCallByValue() {
+    while(betaReduceCallByValueStep());
+}
+
+//apply reduction in call by value
+//true if reduction could be applied
+bool Expression::betaReduceCallByValueStep() {
     //get a list of all terms that are redexs
     //these redexs must not be in an abstraction
     std::vector<Term**> redexs;
@@ -111,8 +117,9 @@ void Expression::betaReduceCallByValue() {
 
         applyBetaRedex(*redex);
 
-        //there may be more redexs, call again
-        this->betaReduceCallByValue();
+        //maybe more redexs, possibly more
+        return true;
     }
-
+    //no more redexs
+    else return false;
 }

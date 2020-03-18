@@ -32,8 +32,8 @@ int main()
     //print the statements
     std::cout << *prog << std::endl;
 
-    //prog->betaReduceNormalOrder();
-    prog->betaReduceCallByValue();
+    prog->betaReduceNormalOrder();
+    //prog->betaReduceCallByValue();
 
     std::cout << *prog << std::endl;
 
