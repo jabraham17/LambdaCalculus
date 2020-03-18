@@ -142,5 +142,21 @@
    "bin/Program.o"
   ],
   "file": "src/data/Program.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-Wextra",
+   "-c",
+   "src/data/Expression.cc",
+   "-o",
+   "bin/Expression.o"
+  ],
+  "file": "src/data/Expression.cc"
  }
 ]

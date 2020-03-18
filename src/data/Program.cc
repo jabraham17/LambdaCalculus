@@ -63,15 +63,16 @@ void Program::readLibrary(std::string file) {
 }
 
 
-//apply reduction in normal order
-//true if reduction could be applied
-bool Program::betaReduceNormalOrder() {
-    return false;
+//apply reduction in normal order to all expressions
+void Program::betaReduceNormalOrder() {
+    for(auto e: statements) {
+        e->betaReduceNormalOrder();
+    }
 }
 
-//apply reduction in call by value
-//true if reduction could be applied
-bool Program::betaReduceCallByValue() {
-
-    return false;
+//apply reduction in call by value to all expressions
+void Program::betaReduceCallByValue() {
+    for(auto e: statements) {
+        e->betaReduceCallByValue();
+    }
 }

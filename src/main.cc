@@ -32,7 +32,10 @@ int main()
     //print the statements
     std::cout << *prog << std::endl;
 
-    while(prog->betaReduceNormalOrder());
+    //prog->betaReduceNormalOrder();
+    prog->betaReduceCallByValue();
+
+    std::cout << *prog << std::endl;
 
     //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 

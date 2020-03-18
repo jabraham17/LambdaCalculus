@@ -30,9 +30,10 @@ class Expression {
     }
 
 
-    int ID() {
-        return id;
-    }
+    int ID() {return id;}
+
+    void betaReduceNormalOrder();
+    void betaReduceCallByValue();
 
     friend std::ostream& operator<<(std::ostream& out, const Expression& e) {
 

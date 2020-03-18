@@ -48,6 +48,9 @@ class Term {
     friend void applyBetaRedex(Term*&);
     friend void replaceVariable(Term*&, Variable*, Term*);
 
+    //its a value, values are not reducible
+    bool isValue() { return !this->isBetaRedex(); }
+
 
     friend std::ostream& operator<<(std::ostream& out, const Term& t) {
 

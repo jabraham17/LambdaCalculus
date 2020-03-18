@@ -33,13 +33,11 @@ class Program {
 
     std::string toJSON();
 
-    //apply reduction in normal order
-    //true if reduction could be applied
-    bool betaReduceNormalOrder();
+    //apply reduction in normal order to all expressions
+    void betaReduceNormalOrder();
 
-    //apply reduction in call by value
-    //true if reduction could be applied
-    bool betaReduceCallByValue();
+    //apply reduction in call by value to all expressions
+    void betaReduceCallByValue();
 
 
     void readLibrary(std::string);
