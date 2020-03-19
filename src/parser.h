@@ -26,6 +26,7 @@ class Parser {
     Program* program;
 
     void syntax_error();
+    void syntax_error(std::string);
     Token expect(TokenType expected_type);
     Token peek();
 

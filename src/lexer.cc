@@ -11,7 +11,7 @@ using namespace std;
 
 // Lexer modified for FIRST & FOLLOW project
 
-const std::string types[] = { "END_OF_FILE",
+const std::string Token::types[] = { "END_OF_FILE",
                       "DOT",
                       "LPAREN",
                       "RPAREN",

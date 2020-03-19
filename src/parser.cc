@@ -8,11 +8,25 @@ void Parser::syntax_error()
     std::cout << "Syntax Error on line " << preprocessor.getLineNumber() << std::endl;
     exit(1);
 }
+void Parser::syntax_error(std::string message)
+{
+    std::cout << "Syntax Error on line " << preprocessor.getLineNumber() << std::endl;
+    std::cout << "Error: " << message << std::endl;
+    exit(1);
+}
 
 Token Parser::expect(TokenType expected_type)
 {
     Token t = preprocessor.getToken();
-    if(t.token_type != expected_type) syntax_error();
+    if(t.token_type != expected_type) {
+
+        std::string message = "Token of type '" +
+                                Token::types[t.token_type] +
+                                "' instead of '" +
+                                Token::types[expected_type] +
+                                "'";
+        syntax_error(message);
+    }
     return t;
 }
 
