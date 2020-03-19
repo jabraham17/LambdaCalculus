@@ -26,7 +26,7 @@ int main()
     prog->readLibrary("library/number");
     prog->readLibrary("library/pair");
     prog->readLibrary("library/test");
-    prog->readLibrary("library/recursive_helper");
+    prog->readLibrary("library/control");
 
 
     //print the statements

@@ -204,10 +204,11 @@ Another method is to redefine functions. This can be done by simply overwriting 
 | iszero   |             |
 
 
-## recursive_helper
+## control
 
 | Function | Description |
 | -------- | ----------- |
+| if       |             |
 | fix      |             |
 
 ## number
