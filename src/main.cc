@@ -22,12 +22,12 @@ int main()
     prog = parser.getProgram();
 
     //read the library
-    prog->readLibrary("library/boolean");
-    prog->readLibrary("library/arithmetic");
-    prog->readLibrary("library/number");
-    prog->readLibrary("library/pair");
-    prog->readLibrary("library/test");
-    prog->readLibrary("library/control");
+    prog->readLibrary("library/boolean.lcl");
+    prog->readLibrary("library/arithmetic.lcl");
+    prog->readLibrary("library/number.lcl");
+    prog->readLibrary("library/pair.lcl");
+    prog->readLibrary("library/test.lcl");
+    prog->readLibrary("library/control.lcl");
 
 
     //print the statements
