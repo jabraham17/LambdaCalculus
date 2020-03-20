@@ -1,6 +1,6 @@
 [
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -16,7 +16,7 @@
   "file": "src/main.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -32,7 +32,7 @@
   "file": "src/lexer.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -48,7 +48,7 @@
   "file": "src/parser.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -64,7 +64,7 @@
   "file": "src/preprocessor.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -80,7 +80,7 @@
   "file": "src/data/symboltable.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -96,7 +96,7 @@
   "file": "src/data/Application.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -112,7 +112,7 @@
   "file": "src/data/Abstraction.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -128,7 +128,7 @@
   "file": "src/data/Term.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",
@@ -144,7 +144,7 @@
   "file": "src/data/Program.cc"
  },
  {
-  "directory": "/Users/abraham/Development/CPP/LambaCalculus",
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
   "arguments": [
    "g++",
    "-Wall",

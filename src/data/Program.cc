@@ -76,3 +76,10 @@ void Program::betaReduceCallByValue() {
         e->betaReduceCallByValue();
     }
 }
+
+//determine all abstractions bindings
+void Program::determineBinding() {
+    for(auto a: this->table->abstractions) {
+        a->determineBinding();
+    }
+}

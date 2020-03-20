@@ -46,7 +46,7 @@ class Term {
 
     bool isBetaRedex();
     friend void applyBetaRedex(Term*&);
-    friend void replaceVariable(Term*&, Variable*, Term*);
+    friend void replaceVariable(Term*&, Variable**, Term*);
 
     //its a value, values are not reducible
     bool isValue() { return !this->isBetaRedex(); }

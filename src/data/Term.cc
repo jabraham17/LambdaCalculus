@@ -19,6 +19,9 @@ bool Term::isBetaRedex() {
     return type == APP && this->application->a->getType() == Term::ABS;
 }
 
+
+//TODO: need to fix is replacing too man variuables
+//TODO: only replace bound variables
 //if this is a valid redex, we can reduce it
 //this is a valid redex so self is an application with 'a' as an abstraction
 //therefore we can get the variable and the term from it
@@ -29,7 +32,7 @@ void applyBetaRedex(Term*& self) {
     Abstraction* abs = self->application->a->abstraction;
 
     //what variable we are replacing
-    Variable* replace = abs->variable;
+    Variable** replace = &(abs->variable);
     //the t term, must have paren
     Term* t = abs->term;
     t->addParen();
@@ -46,9 +49,9 @@ void applyBetaRedex(Term*& self) {
 }
 
 //for all the varaiables in t, replace them with tprime(tp)
-void replaceVariable(Term*& t, Variable* v, Term* tp) {
-    //if its an atom and the vars match, replace with tp
-    if(t->type == Term::Type::ATOM && t->atom->type == Atom::Type::VAR && *(t->atom->variable) == *v) {
+void replaceVariable(Term*& t, Variable** v, Term* tp) {
+    //if its an atom and the var is bound, replace with tp
+    if(t->type == Term::Type::ATOM && t->atom->type == Atom::Type::VAR && t->atom->variable->isBoundTo(*v)) {
         t = tp;
     }
     //if an abstraction, call recursivly on abstraction body

@@ -29,6 +29,9 @@ class Abstraction {
 
     std::string toJSON();
 
+    //determine the binding for this abstraction
+    void determineBinding();
+
     friend std::ostream& operator<<(std::ostream& out, const Abstraction& a) {
 
         out << "$" << *(a.variable) << ". " << *(a.term);

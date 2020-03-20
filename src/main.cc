@@ -8,6 +8,7 @@
 #include "preprocessor.h"
 #include <iostream>
 
+
 int main()
 {
     //if a debug input var is set, redirect cin to it
@@ -32,10 +33,12 @@ int main()
     //print the statements
     std::cout << *prog << std::endl;
 
+    prog->determineBinding();
     prog->betaReduceNormalOrder();
     //prog->betaReduceCallByValue();
 
     std::cout << *prog << std::endl;
+
 
     //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 

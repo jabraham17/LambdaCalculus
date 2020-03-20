@@ -33,6 +33,10 @@ class Program {
 
     std::string toJSON();
 
+
+    //determine all abstarctions bindings
+    void determineBinding();
+
     //apply reduction in normal order to all expressions
     void betaReduceNormalOrder();
 
