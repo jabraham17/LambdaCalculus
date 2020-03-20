@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "Abstraction.h"
 #include "Atom.h"
+#include <vector>
 
 
 class Abstraction;

@@ -34,6 +34,10 @@ int main()
     std::cout << *prog << std::endl;
 
     prog->determineBinding();
+    //prog->statements[0]->term->application->a->application->a->abstraction->alphaRename("a");
+    std::cout << *prog << std::endl;
+
+    prog->determineBinding();
     prog->betaReduceNormalOrder();
     //prog->betaReduceCallByValue();
 

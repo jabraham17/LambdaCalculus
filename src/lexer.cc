@@ -52,6 +52,10 @@ void Lexer::skipWhiteSpace() {
 
 }
 
+bool isIDChar(char c) {
+    return isalnum(c) || c == '_' || c == '-';
+}
+
 Token Lexer::scanId() {
     char c = getChar();
 
@@ -59,9 +63,9 @@ Token Lexer::scanId() {
     Token t;
 
     //if its a char
-    if(isalnum(c)) {
+    if(isIDChar(c)) {
         std::string lexeme = "";
-        while(!endOfInput() && isalnum(c)) {
+        while(!endOfInput() && isIDChar(c)) {
             lexeme += c;
             c = getChar();
         }
@@ -122,7 +126,7 @@ Token Lexer::getToken()
         case '#': ignoreComment(); return getToken();
         default:
             //if alpha, get the id
-            if(isalnum(c)) {
+            if(isIDChar(c)) {
                 ungetChar(c);
                 return scanId();
             }

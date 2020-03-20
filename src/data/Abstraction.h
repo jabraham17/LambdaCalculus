@@ -32,6 +32,9 @@ class Abstraction {
     //determine the binding for this abstraction
     void determineBinding();
 
+    //rename all parameter and all bound variables
+    void alphaRename(std::string);
+
     friend std::ostream& operator<<(std::ostream& out, const Abstraction& a) {
 
         out << "$" << *(a.variable) << ". " << *(a.term);

@@ -20,30 +20,66 @@ bool Term::isBetaRedex() {
 }
 
 
-//TODO: need to fix is replacing too man variuables
-//TODO: only replace bound variables
+//get a list of parameters in function (t) that contain variables bound to parameter
+//parameters are the variable to a abstraction
+std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
+    std::vector<Term**> res;
+    //if this is an abstraction, check the param and call on the body
+    if((*term)->getType() == Term::ABS) {
+        //if the param is the same name as the passed in param, make a new list with one element and search the body
+        if(*((*term)->abstraction->variable) == **param) {
+            res.push_back(term);
+        }
+
+        std::vector<Term**> fromBody = listOfBoundParameter(param, &((*term)->abstraction->term));
+        for(auto t: fromBody) {
+            res.push_back(t);
+        }
+    }
+    //if this is an application, apply to left and right
+    else if((*term)->getType() == Term::APP) {
+        std::vector<Term**> a = listOfBoundParameter(param, &((*term)->application->a));
+        std::vector<Term**> b = listOfBoundParameter(param, &((*term)->application->b));
+        for(auto t: a) {
+            res.push_back(t);
+        }
+        for(auto t: b) {
+            res.push_back(t);
+        }
+    }
+    return res;
+}
+
+
 //if this is a valid redex, we can reduce it
 //this is a valid redex so self is an application with 'a' as an abstraction
 //therefore we can get the variable and the term from it
 //the replacement term, tprime, is the 'b' of the abstraction
+#include <iostream>
 void applyBetaRedex(Term*& self) {
 
-    //the abstraction we are replacing
+    //the function we are replacing
     Abstraction* abs = self->application->a->abstraction;
 
-    //what variable we are replacing
-    Variable** replace = &(abs->variable);
+    //for all the parameters that could cause potential renaming issues, rename by appending an '_'
+    for(auto t: listOfBoundParameter(&(abs->variable), &(abs->term))) {
+        std::string newName = (*t)->abstraction->variable->getName() + "_";
+        (*t)->abstraction->alphaRename(newName);
+    }
+
+    //what variable we are replacing, the parameter
+    Variable** param = &(abs->variable);
     //the t term, must have paren
     Term* t = abs->term;
     t->addParen();
 
     //the t' term
     Term* tprime = self->application->b;
-    //if this isnt a term add paren
+    //if this isnt an atom add paren
     if(tprime->getType() != Term::ATOM) tprime->addParen();
 
     //replace all terms
-    replaceVariable(t, replace, tprime);
+    replaceVariable(t, param, tprime);
 
     self = t;
 }

@@ -21,6 +21,9 @@ class Variable {
         return id;
     }
 
+    void setName(std::string s) {name = s;}
+    std::string getName() {return name;}
+
     void setBoundTo(Variable* v) {boundTo = v;}
     Variable* getBoundTo() {return boundTo;}
     bool isBound() {return boundTo != NULL;}
