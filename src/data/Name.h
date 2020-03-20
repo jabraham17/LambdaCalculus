@@ -15,6 +15,12 @@ class Name {
     Name(int id, std::string name): id(id), name(name) {}
     ~Name(){}
 
+    //define a copy constructor
+    Name(const Name& old) {
+        id = -1;
+        name = old.name;
+    }
+
     int ID() {
         return id;
     }

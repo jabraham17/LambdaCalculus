@@ -30,11 +30,13 @@ class Term {
     Application* application;
 
     public:
-    Term(int id, Atom* atom, bool paren): id(id), type(ATOM), paren(paren), atom(atom), abstraction(NULL), application(NULL) {}
-    Term(int id, Abstraction* abs, bool paren): id(id), type(ABS), paren(paren), atom(NULL), abstraction(abs), application(NULL) {}
-    Term(int id, Application* app, bool paren): id(id), type(APP), paren(paren), atom(NULL), abstraction(NULL), application(app) {}
-    ~Term(){}
+    Term(int, Atom*, bool);
+    Term(int, Abstraction*, bool);
+    Term(int, Application*, bool);
+    ~Term();
 
+    //define a copy constructor
+    Term(const Term&);
 
     std::string toJSON();
 

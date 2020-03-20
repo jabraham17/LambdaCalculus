@@ -19,8 +19,11 @@ class Abstraction {
     Term* term;
 
     public:
-    Abstraction(int id, Variable* var, Term* term): id(id), variable(var), term(term) {}
-    ~Abstraction(){}
+    Abstraction(int, Variable*, Term*);
+    ~Abstraction();
+
+    //define a copy constructor
+    Abstraction(const Abstraction&);
 
 
     int ID() {

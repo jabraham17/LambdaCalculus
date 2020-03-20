@@ -1,5 +1,23 @@
 #include "Term.h"
 
+Term::Term(int id, Atom* atom, bool paren): id(id), type(ATOM), paren(paren), atom(atom), abstraction(NULL), application(NULL) {}
+Term::Term(int id, Abstraction* abs, bool paren): id(id), type(ABS), paren(paren), atom(NULL), abstraction(abs), application(NULL) {}
+Term::Term(int id, Application* app, bool paren): id(id), type(APP), paren(paren), atom(NULL), abstraction(NULL), application(app) {}
+Term::~Term(){}
+Term::Term(const Term& old) {
+    id = -1;
+    type = old.type;
+    paren = old.paren;
+    if(old.atom == NULL) atom = NULL;
+    else atom = new Atom(*(old.atom));
+
+    if(old.abstraction == NULL) abstraction = NULL;
+    else abstraction = new Abstraction(*(old.abstraction));
+
+    if(old.application == NULL) application = NULL;
+    else application = new Application(*(old.application));
+}
+
 std::string Term::toJSON() {
     std::stringstream s;
     s << "\"term\":{";

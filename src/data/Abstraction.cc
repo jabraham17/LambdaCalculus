@@ -1,5 +1,16 @@
 #include "Abstraction.h"
 
+Abstraction::Abstraction(int id, Variable* var, Term* term): id(id), variable(var), term(term) {}
+Abstraction::~Abstraction(){}
+
+//define a copy constructor
+Abstraction::Abstraction(const Abstraction& old) {
+    id = -1;
+    variable = new Variable(*(old.variable));
+    term = new Term(*(old.term));
+}
+
+
 std::string Abstraction::toJSON() {
     std::stringstream s;
     s << "\"abstraction\":{";

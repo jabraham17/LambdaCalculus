@@ -20,8 +20,11 @@ class Application {
     Term* b;
 
     public:
-    Application(int id, Term* a, Term* b): id(id), a(a), b(b) {}
-    ~Application(){}
+    Application(int, Term*, Term* b);
+    ~Application();
+
+    //define a copy constructor
+    Application(const Application&);
 
 
     int ID() {return id;}

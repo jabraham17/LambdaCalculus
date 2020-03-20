@@ -23,6 +23,17 @@ class Atom {
     Atom(int id, Variable* var): id(id), type(VAR), name(NULL), variable(var) {}
     ~Atom(){}
 
+    //define a copy constructor
+    Atom(const Atom& old) {
+        id = -1;
+        type = old.type;
+        if(old.name == NULL) name = NULL;
+        else name = new Name(*(old.name));
+
+        if(old.variable == NULL) variable = NULL;
+        else variable = new Variable(*(old.variable));
+    }
+
     int ID() {
         return id;
     }

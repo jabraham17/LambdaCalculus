@@ -17,6 +17,13 @@ class Variable {
     Variable(int id, std::string name): id(id), name(name), boundTo(NULL) {}
     ~Variable(){}
 
+    //define a copy constructor
+    Variable(const Variable& old) {
+        id = -1;
+        name = old.name;
+        boundTo = old.boundTo;
+    }
+
     int ID() {
         return id;
     }
@@ -32,7 +39,7 @@ class Variable {
     //determine if this is bound to var v
     //v is the parameter of the abstraction
     bool isBoundTo(Variable* v) {
-        return boundTo != NULL && (*v == *boundTo) && v == boundTo;
+        return boundTo != NULL && (*v == *boundTo);
     }
 
     std::string toJSON() {

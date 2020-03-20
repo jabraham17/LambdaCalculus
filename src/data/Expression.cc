@@ -7,11 +7,18 @@ Term* findDefine(Name* name, std::vector<Define*> defines) {
     //check the defines for a define
     for(auto d: defines) {
         if(*(d->getName()) == *name) {
-            return d->getExpression()->term;
+
+            //make a copy of the term
+            Term* old = d->getExpression()->term;
+            Term* newTerm = new Term(*old);
+
+            return newTerm;
         }
     }
     return NULL;
 }
+
+
 
 /*
  * Truth table for how these redexs return
