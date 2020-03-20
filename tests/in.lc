@@ -6,3 +6,8 @@
 @and @tru @fls;
 @or @tru @fls;
 @plus @1 @4;
+@plus @2 @2;
+@times @2 @3;
+@succ @4;
+@if (@iszero @0) (@plus @3 @4) (@plus @2 @2);
+@if (@iszero @6) (@plus @3 @4) (@plus @2 @2);
