@@ -60,20 +60,17 @@ class Term {
 
         if(t.paren) out << "(";
 
-        if(t.type == ATOM) {
-            out << *(t.atom);
-        }
-        else if(t.type == ABS) {
-            out << *(t.abstraction);
-        }
-        else if(t.type == APP) {
-            out << *(t.application);
-        }
+        if(t.type == ATOM) out << *(t.atom);
+        else if(t.type == ABS) out << *(t.abstraction);
+        else if(t.type == APP) out << *(t.application);
 
         if(t.paren) out << ")";
 
         return out;
     }
+
+    friend bool operator==(const Term& lhs, const Term& rhs);
+    friend bool operator!=(const Term& lhs, const Term& rhs);
 };
 
 #endif

@@ -33,6 +33,7 @@ class Program {
 
     std::string toJSON();
 
+    std::vector<Define*> allDefines();
 
     //determine all abstarctions bindings
     void determineBinding();
@@ -43,8 +44,10 @@ class Program {
     //apply reduction in call by value to all expressions
     void betaReduceCallByValue();
 
-
     void readLibrary(std::string);
+
+    //check if this statement can be expressed as a define
+    void checkForDefines();
 
 };
 

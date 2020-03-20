@@ -88,3 +88,10 @@ void Abstraction::alphaRename(std::string newName) {
     (*param)->setName(newName);
 
 }
+
+bool operator==(const Abstraction& lhs, const Abstraction& rhs) {
+    return *(lhs.variable) == *(rhs.variable) && *(lhs.term) == *(rhs.term);
+}
+bool operator!=(const Abstraction& lhs, const Abstraction& rhs) {
+    return !(lhs == rhs);
+}

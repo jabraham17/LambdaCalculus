@@ -124,3 +124,15 @@ void replaceVariable(Term*& t, Variable** v, Term* tp) {
         replaceVariable(t->application->b, v, tp);
     }
 }
+
+bool operator==(const Term& lhs, const Term& rhs) {
+    if(lhs.type == rhs.type) {
+        if(lhs.type == Term::ATOM) return *(lhs.atom) == *(rhs.atom);
+        if(lhs.type == Term::ABS) return *(lhs.abstraction) == *(rhs.abstraction);
+        if(lhs.type == Term::APP) return *(lhs.application) == *(rhs.application);
+    }
+    return false;
+}
+bool operator!=(const Term& lhs, const Term& rhs) {
+    return !(lhs == rhs);
+}

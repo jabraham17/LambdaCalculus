@@ -35,6 +35,9 @@ class Application {
         out << *(a.a) << " " << *(a.b);
         return out;
     }
+
+    friend bool operator==(const Application& lhs, const Application& rhs);
+    friend bool operator!=(const Application& lhs, const Application& rhs);
 };
 
 #endif

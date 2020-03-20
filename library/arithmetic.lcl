@@ -1,4 +1,4 @@
-@add = $m.$n. m @succ n;
+@plus = $m.$n.$s.$z. m s (n s z);
 @minus = $m.$n. n @pred m;
 @pred = $n. @fst (n @next (@pair @0 @0));
 @next = $p. @pair (snd p) (@succ (@snd p));

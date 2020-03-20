@@ -21,3 +21,10 @@ std::string Application::toJSON() {
     s << "]";
     return s.str();
 }
+
+bool operator==(const Application& lhs, const Application& rhs) {
+    return *(lhs.a) == *(rhs.a) && *(lhs.b) == *(rhs.b);
+}
+bool operator!=(const Application& lhs, const Application& rhs) {
+    return !(lhs == rhs);
+}

@@ -59,6 +59,17 @@ class Atom {
         }
         return out;
     }
+
+    friend bool operator==(const Atom& lhs, const Atom& rhs) {
+        if(lhs.type == rhs.type) {
+            if(lhs.type == Atom::VAR) return *(lhs.variable) == *(rhs.variable);
+            if(lhs.type == Atom::NAME) return *(lhs.name) == *(rhs.name);
+        }
+        return false;
+    }
+    friend bool operator!=(const Atom& lhs, const Atom& rhs) {
+        return !(lhs == rhs);
+    }
 };
 
 #endif

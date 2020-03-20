@@ -29,19 +29,15 @@ int main()
     prog->readLibrary("library/test.lcl");
     prog->readLibrary("library/control.lcl");
 
-    //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
-
-    //print the statements
-    std::cout << *prog << std::endl;
 
     //reduce in normal order
     prog->determineBinding();
     prog->betaReduceNormalOrder();
+    prog->checkForDefines();
 
-    std::cout << std::endl << *prog << std::endl;
+    std::cout << *prog << std::endl;
 
 
-    //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 
 /*
     Preprocessor pre;

@@ -43,6 +43,9 @@ class Abstraction {
         out << "$" << *(a.variable) << ". " << *(a.term);
         return out;
     }
+
+    friend bool operator==(const Abstraction& lhs, const Abstraction& rhs);
+    friend bool operator!=(const Abstraction& lhs, const Abstraction& rhs);
 };
 
 

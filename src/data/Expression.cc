@@ -11,6 +11,7 @@ Term* findDefine(Name* name, std::vector<Define*> defines) {
             //make a copy of the term
             Term* old = d->getExpression()->term;
             Term* newTerm = new Term(*old);
+            newTerm->addParen();
 
             return newTerm;
         }
@@ -51,22 +52,9 @@ Term** findRedex(Term** term, std::vector<Define*> defines) {
     Term** left = NULL;
     Term** right = NULL;
 
-
     //if this term is a redex, we found an outer redex
     if((*term)->isBetaRedex()) {
-        //if the left is a definition, expand it
-        if((*term)->application->a->isDefinition()) {
-            Name* name = (*term)->application->a->atom->name;
-            Term* replacement = findDefine(name, defines);
-            if(replacement == NULL) {
-                std::cout << "Error:  " << name->getName() << " is not defined" << std::endl;
-                exit(1);
-            }
-            (*term)->application->a = replacement;
-            //we replace the term and recall this function
-            return findRedex(term, defines);
-        }
-        else outer = term;
+        outer = term;
     }
 
     //if its an application, check the left and right
@@ -74,19 +62,40 @@ Term** findRedex(Term** term, std::vector<Define*> defines) {
         left = findRedex(&((*term)->application->a), defines);
         right = findRedex(&((*term)->application->b), defines);
     }
+    //if its an abstraction, check the body
+    else if(outer == NULL && left == NULL && right == NULL && (*term)->getType() == Term::ABS) {
+        return findRedex(&((*term)->abstraction->term), defines);
+    }
 
-    if(outer != NULL) return outer;
-    if(outer == NULL && left != NULL) return left;
-    if(outer == NULL && left == NULL && right != NULL) return right;
+    Term** ret = NULL;
+    if(outer != NULL) ret = outer;
+    else if(outer == NULL && left != NULL) ret = left;
+    else if(outer == NULL && left == NULL && right != NULL) ret = right;
 
-    //otherwise NULL
-    return NULL;
+
+    //if the returns left is a definition, expand it
+    if(ret != NULL && (*ret) != NULL && (*ret)->application->a->isDefinition()) {
+        Name* name = (*term)->application->a->atom->name;
+        Term* replacement = findDefine(name, defines);
+        if(replacement == NULL) {
+            std::cout << "Error:  " << name->getName() << " is not defined" << std::endl;
+            exit(1);
+        }
+        (*ret)->application->a = replacement;
+    }
+
+    return ret;
 }
 
 //apply reduction in normal order
 //true if reduction could be applied
 void Expression::betaReduceNormalOrder(std::vector<Define*> defines) {
-    while(betaReduceNormalOrderStep(defines));
+    while(betaReduceNormalOrderStep(defines)) {
+        //std::cout << *this << std::endl;
+    }
+
+    //if there is more to check, do it again
+    if(betaReduceNormalOrderStep(defines)) betaReduceNormalOrder(defines);
 }
 
 

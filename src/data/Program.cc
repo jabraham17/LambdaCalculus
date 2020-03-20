@@ -68,17 +68,21 @@ void Program::readLibrary(std::string file) {
     }
 }
 
+//put all defines in a list, user defined first
+std::vector<Define*> Program::allDefines() {
+    std::vector<Define*> allDefs;
+    for(auto d: this->table->defines) allDefs.push_back(d);
+    for(auto d: this->library) allDefs.push_back(d);
+    return allDefs;
+}
 
 //apply reduction in normal order to all expressions
 void Program::betaReduceNormalOrder() {
-    //put all defines in a list, user defined first
-    std::vector<Define*> allDefines;
-    for(auto d: this->table->defines) allDefines.push_back(d);
-    for(auto d: this->library) allDefines.push_back(d);
 
+    auto defs = allDefines();
 
     for(auto e: statements) {
-        e->betaReduceNormalOrder(allDefines);
+        e->betaReduceNormalOrder(defs);
     }
 }
 
@@ -93,5 +97,18 @@ void Program::betaReduceCallByValue() {
 void Program::determineBinding() {
     for(auto a: this->table->abstractions) {
         a->determineBinding();
+    }
+}
+
+//check if this statement can be expressed as a define
+void Program::checkForDefines() {
+    auto defs = allDefines();
+
+    for(auto e: statements) {
+        for(auto d: defs) {
+            if(*(e->term) == *(d->getExpression()->term)) {
+                e->term = new Term(-1, new Atom(-1, d->getName()), true);
+            }
+        }
     }
 }
