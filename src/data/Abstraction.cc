@@ -19,7 +19,7 @@ void determineBinding(Variable** param, Term** term) {
 
     //if this is a variable that is the same as the parameter
     //this is a base case
-    if((*term)->getType() == Term::ATOM && (*term)->atom->VAR == Atom::VAR && *((*term)->atom->variable) == **param) {
+    if((*term)->getType() == Term::ATOM && (*term)->atom->getType() == Atom::VAR && *((*term)->atom->variable) == **param) {
         (*term)->atom->variable->setBoundTo(*param);
         return;
     }

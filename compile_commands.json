@@ -158,5 +158,21 @@
    "bin/Expression.o"
   ],
   "file": "src/data/Expression.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-Wextra",
+   "-c",
+   "src/data/Define.cc",
+   "-o",
+   "bin/Define.o"
+  ],
+  "file": "src/data/Define.cc"
  }
 ]

@@ -9,7 +9,9 @@
 
 #include "Name.h"
 #include "Term.h"
+#include "Define.h"
 
+class Define;
 class Expression {
     private:
     int id;
@@ -32,17 +34,12 @@ class Expression {
 
     int ID() {return id;}
 
-    void betaReduceNormalOrder();
-    bool betaReduceNormalOrderStep();
+    void betaReduceNormalOrder(std::vector<Define*>);
+    bool betaReduceNormalOrderStep(std::vector<Define*>);
     void betaReduceCallByValue();
     bool betaReduceCallByValueStep();
 
-    friend std::ostream& operator<<(std::ostream& out, const Expression& e) {
-
-        out << *(e.term);
-
-        return out;
-    }
+    friend std::ostream& operator<<(std::ostream&, const Expression&);
 };
 
 #endif

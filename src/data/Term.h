@@ -45,6 +45,7 @@ class Term {
     void addParen() { paren = true; }
     bool hasParen() {return paren; }
 
+    bool isDefinition();
     bool isBetaRedex();
     friend void applyBetaRedex(Term*&);
     friend void replaceVariable(Term*&, Variable**, Term*);

@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -g -std=c++11 -Werror -Wextra
 LDFLAGS=
 EXTENSION= cc
-SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Application.cc Abstraction.cc Term.cc Program.cc Expression.cc
+SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Application.cc Abstraction.cc Term.cc Program.cc Expression.cc Define.cc
 SOURCE_FOLDER= src
 OBJECTS = $(patsubst %.$(EXTENSION),$(OBJECT_FOLDER)/%.o,$(SOURCES))
 OBJECT_FOLDER=bin
@@ -47,6 +47,9 @@ $(OBJECT_FOLDER)/Program.o: $(SOURCE_FOLDER)/data/Program.cc $(SOURCE_FOLDER)/da
 $(OBJECT_FOLDER)/Expression.o: $(SOURCE_FOLDER)/data/Expression.cc $(DATA_HEADERS_PATH)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJECT_FOLDER)/Define.o: $(SOURCE_FOLDER)/data/Define.cc $(DATA_HEADERS_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
+
 .PHONY: mkdirs
 mkdirs:
 	@if [ ! -d src ] ; then \
@@ -59,4 +62,5 @@ mkdirs:
 .PHONY: clean
 clean:
 	rm -rf $(OBJECT_FOLDER)/*.o
+	rmdir $(OBJECT_FOLDER)
 	rm -f $(TARGET)

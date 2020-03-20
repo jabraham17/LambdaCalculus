@@ -53,8 +53,14 @@ void Program::readLibrary(std::string file) {
     Parser p(in);
     p.parse();
 
+    Program* lib = p.getProgram();
+
+    //before we read the defintions, we need to determine bindings
+    lib->determineBinding();
+
+
     //read in the new definitions, dont care about anything else
-    std::vector<Define*> newDefs = p.getProgram()->table->defines;
+    std::vector<Define*> newDefs = lib->table->defines;
 
     //append these defines to the end of the library
     for(auto d: newDefs) {
@@ -65,8 +71,14 @@ void Program::readLibrary(std::string file) {
 
 //apply reduction in normal order to all expressions
 void Program::betaReduceNormalOrder() {
+    //put all defines in a list, user defined first
+    std::vector<Define*> allDefines;
+    for(auto d: this->table->defines) allDefines.push_back(d);
+    for(auto d: this->library) allDefines.push_back(d);
+
+
     for(auto e: statements) {
-        e->betaReduceNormalOrder();
+        e->betaReduceNormalOrder(allDefines);
     }
 }
 

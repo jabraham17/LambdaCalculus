@@ -2,3 +2,6 @@
 ($x.$y. x y) w z;
 # this is a comment
 @define = x;
+@tru x y;
+@fls x y;
+@and @tru @fls;

@@ -19,6 +19,8 @@ class Name {
         return id;
     }
 
+    std::string getName() {return name;}
+
     std::string toJSON() {
         std::stringstream s;
         s << "\"name\":\"" << name << "\"";
@@ -28,6 +30,8 @@ class Name {
 
     friend bool operator==(const Name& lhs, const std::string& rhs) { return lhs.name == rhs; }
     friend bool operator!=(const Name& lhs, const std::string& rhs) { return !(lhs.name == rhs); }
+    friend bool operator==(const Name& lhs, const Name& rhs) { return lhs.name == rhs.name; }
+    friend bool operator!=(const Name& lhs, const Name& rhs) { return !(lhs == rhs); }
 
     friend std::ostream& operator<<(std::ostream& out, const Name& n) {
 

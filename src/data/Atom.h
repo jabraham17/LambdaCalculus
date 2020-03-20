@@ -13,8 +13,8 @@ class Atom {
     public: //needs to be public so we can compare
     enum Type { NAME=0, VAR };
     private:
-    public: //TODO: make getters and setters
     Type type;
+    public: //TODO: make getters and setters
     Name* name;
     Variable* variable;
 
@@ -26,6 +26,8 @@ class Atom {
     int ID() {
         return id;
     }
+
+    Type getType() {return type;}
 
     std::string toJSON() {
         std::stringstream s;

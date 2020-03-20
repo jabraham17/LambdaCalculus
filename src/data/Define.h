@@ -11,6 +11,8 @@
 #include "Term.h"
 #include "Expression.h"
 
+class Expression;
+
 class Define {
 private:
     int id;
@@ -22,28 +24,17 @@ public:
     Define(int id, Name* name, Expression* expr): id(id), name(name), expr(expr) {}
     ~Define(){}
 
-    std::string toJSON() {
-        std::stringstream s;
-        s << "\"define\":{";
-        s << name->toJSON();
-        s << ",";
-        s << expr->toJSON();
-        s << "}";
-        return s.str();
-    }
+    Name* getName() {return name;}
+    Expression* getExpression() {return expr;}
+
+    std::string toJSON();
 
 
     int ID() {
         return id;
     }
 
-    friend std::ostream& operator<<(std::ostream& out, const Define& d) {
-
-        out << *(d.name) << " = ";
-        out << *(d.expr);
-
-        return out;
-    }
+    friend std::ostream& operator<<(std::ostream&, const Define&);
 };
 
 #endif

@@ -13,11 +13,17 @@ std::string Term::toJSON() {
     return s.str();
 }
 
-//if this term is an application and the application's a term is an abstraction
+//its a defition if its an atom and a name
+bool Term::isDefinition() {
+    return this->getType() == ATOM && this->atom->getType() == Atom::NAME;
+}
+
+//if this term is an application and (the application's a term is an abstraction or a definition
 bool Term::isBetaRedex() {
 
-    return type == APP && this->application->a->getType() == Term::ABS;
+    return type == APP && (this->application->a->getType() == Term::ABS || this->application->a->isDefinition());
 }
+
 
 
 //get a list of parameters in function (t) that contain variables bound to parameter
@@ -87,7 +93,7 @@ void applyBetaRedex(Term*& self) {
 //for all the varaiables in t, replace them with tprime(tp)
 void replaceVariable(Term*& t, Variable** v, Term* tp) {
     //if its an atom and the var is bound, replace with tp
-    if(t->type == Term::Type::ATOM && t->atom->type == Atom::Type::VAR && t->atom->variable->isBoundTo(*v)) {
+    if(t->type == Term::Type::ATOM && t->atom->getType() == Atom::VAR && t->atom->variable->isBoundTo(*v)) {
         t = tp;
     }
     //if an abstraction, call recursivly on abstraction body

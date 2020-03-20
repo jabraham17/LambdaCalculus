@@ -1,7 +1,17 @@
 
 
 #include "Expression.h"
+#include <iostream>
 
+Term* findDefine(Name* name, std::vector<Define*> defines) {
+    //check the defines for a define
+    for(auto d: defines) {
+        if(*(d->getName()) == *name) {
+            return d->getExpression()->term;
+        }
+    }
+    return NULL;
+}
 
 /*
  * Truth table for how these redexs return
@@ -27,7 +37,7 @@
  *
  */
 //find the leftmost outermost redex
-Term** findRedex(Term** term) {
+Term** findRedex(Term** term, std::vector<Define*> defines) {
 
     //possible redexs
     Term** outer = NULL;
@@ -37,13 +47,25 @@ Term** findRedex(Term** term) {
 
     //if this term is a redex, we found an outer redex
     if((*term)->isBetaRedex()) {
-        outer = term;
+        //if the left is a definition, expand it
+        if((*term)->application->a->isDefinition()) {
+            Name* name = (*term)->application->a->atom->name;
+            Term* replacement = findDefine(name, defines);
+            if(replacement == NULL) {
+                std::cout << "Error:  " << name->getName() << " is not defined" << std::endl;
+                exit(1);
+            }
+            (*term)->application->a = replacement;
+            //we replace the term and recall this function
+            return findRedex(term, defines);
+        }
+        else outer = term;
     }
 
     //if its an application, check the left and right
     if((*term)->getType() == Term::APP) {
-        left = findRedex(&((*term)->application->a));
-        right = findRedex(&((*term)->application->b));
+        left = findRedex(&((*term)->application->a), defines);
+        right = findRedex(&((*term)->application->b), defines);
     }
 
     if(outer != NULL) return outer;
@@ -56,14 +78,14 @@ Term** findRedex(Term** term) {
 
 //apply reduction in normal order
 //true if reduction could be applied
-void Expression::betaReduceNormalOrder() {
-    while(betaReduceNormalOrderStep());
+void Expression::betaReduceNormalOrder(std::vector<Define*> defines) {
+    while(betaReduceNormalOrderStep(defines));
 }
 
 
-bool Expression::betaReduceNormalOrderStep() {
+bool Expression::betaReduceNormalOrderStep(std::vector<Define*> defines) {
     //get a redex
-    Term** redex = findRedex(&this->term);
+    Term** redex = findRedex(&this->term, defines);
 
     //if its NULL, no more redexs
     if(redex == NULL) return false;
@@ -122,4 +144,11 @@ bool Expression::betaReduceCallByValueStep() {
     }
     //no more redexs
     else return false;
+}
+
+std::ostream& operator<<(std::ostream& out, const Expression& e) {
+
+    out << *(e.term);
+
+    return out;
 }

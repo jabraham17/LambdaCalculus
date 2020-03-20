@@ -8,7 +8,6 @@
 #include "preprocessor.h"
 #include <iostream>
 
-
 int main()
 {
     //if a debug input var is set, redirect cin to it
@@ -17,8 +16,9 @@ int main()
     }
 
     Parser parser;
-    Program* prog = NULL;
     parser.parse();
+
+    Program* prog = NULL;
     prog = parser.getProgram();
 
     //read the library
@@ -34,14 +34,9 @@ int main()
     std::cout << *prog << std::endl;
 
     prog->determineBinding();
-    //prog->statements[0]->term->application->a->application->a->abstraction->alphaRename("a");
-    std::cout << *prog << std::endl;
-
-    prog->determineBinding();
     prog->betaReduceNormalOrder();
-    //prog->betaReduceCallByValue();
 
-    std::cout << *prog << std::endl;
+    std::cout << std::endl << *prog << std::endl;
 
 
     //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
