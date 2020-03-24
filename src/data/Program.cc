@@ -2,7 +2,26 @@
 #include "../parser.h"
 #include <fstream>
 
-//print the program, dont include the library
+
+Program::Program(): statements(), table(new SymbolTable()), library() {}
+Program::~Program() {
+    delete(table);
+}
+
+std::vector<Term*> Program::getStatements() const {return statements;}
+void Program::addStatement(Term* t) {statements.push_back(t);}
+SymbolTable* Program::getSymbolTable() {return table;}
+std::vector<Define*> Program::getLibraryDefines() {return library;}
+
+
+std::ostream& operator<<(std::ostream& out, const Program& p) {
+    std::string sep;
+    for(auto statement: p.getStatements()) {
+        out << sep << *statement;
+        sep = '\n';
+    }
+    return out;
+}
 std::string Program::toJSON() {
     std::stringstream s;
     s << "{";
@@ -10,41 +29,50 @@ std::string Program::toJSON() {
     // definitions
     s << "\"library-definitions\":[";
     std::string sep = "";
-    for(auto d: library) {
-        s << sep;
-        s << "{" << d->toJSON() << "}";
+    for(auto d: getLibraryDefines()) {
+        s << sep << "{" << d->toJSON() << "}";
         sep = ",";
     }
-    s << "]";
+    s << "],";
 
-    s << ",";
 
     s << "\"user-definitions\":[";
     sep = "";
-    for(auto d: table->defines) {
-        s << sep;
-        s << "{" << d->toJSON() << "}";
+    for(auto d: getSymbolTable()->defines) {
+        s << sep <<"{" << d->toJSON() << "}";
         sep = ",";
     }
-    s << "]";
-
-    s << ",";
+    s << "],";
 
     // statements
     s << "\"statements\":[";
     sep = "";
-    for(auto state: statements) {
-        s << sep;
-        s << "{" << state->toJSON() << "}";
+    for(auto state: getStatements()) {
+        s << sep << "{" << state->toJSON() << "}";
         sep = ",";
     }
     s<< "]";
-
     s << "}";
 
     return s.str();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO
+/*
 //read in the library file and append to the vector the definitons, everything else is trash
 void Program::readLibrary(std::string file) {
 
@@ -111,4 +139,4 @@ void Program::checkForDefines() {
             }
         }
     }
-}
+}*/

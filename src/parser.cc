@@ -92,7 +92,7 @@ void Parser::parse_line() {
         expect(SEMICOLON);
 
         //add the expression to the list of statements
-        program->statements.push_back(t);
+        program->addStatement(t);
 
     }
     else {
@@ -106,20 +106,20 @@ Define* Parser::parse_define() {
     expect(EQUALS);
     Term* t = parse_term();
 
-    Define* d = program->table->createDefine(name, t);
+    Define* d = program->getSymbolTable()->createDefine(name, t);
     return d;
 }
 //var -> ID
-Variable* Parser::parse_var() {
+Variable* Parser::parse_variable() {
     Token t = expect(ID);
-    return program->table->createVariable(t.lexeme);
+    return program->getSymbolTable()->createVariable(t.lexeme);
 }
 //name -> AT ID
 Name* Parser::parse_name() {
     expect(AT);
     Token t = expect(ID);
 
-    return program->table->createName(t.lexeme);
+    return program->getSymbolTable()->createName(t.lexeme);
 }
 
 //1. term -> variable
@@ -133,11 +133,13 @@ Term* Parser::parse_term() {
 
     //1
     if(t.token_type == ID) {
-        Variable* newVar = parse_var();
+        Variable* var = parse_variable();
+        return program->getSymbolTable()->createTerm(var);
     }
     //2
     else if(t.token_type == AT) {
-        Name* newName = parse_name();
+        Name* name = parse_name();
+        return program->getSymbolTable()->createTerm(name);
     }
     //3
     else if(t.token_type == LPAREN) {
@@ -151,11 +153,11 @@ Term* Parser::parse_term() {
     else if(t.token_type == LCURLY) {
         expect(LCURLY);
         expect(LAMBDA);
-        Variable* var = parse_var();
+        Variable* var = parse_variable();
         expect(DOT);
         Term* term = parse_term();
         expect(RCURLY);
-        return program->table->createTerm(var, term);
+        return program->getSymbolTable()->createTerm(var, term);
     }
     //5
     else if(t.token_type == LBRACK) {
@@ -163,7 +165,7 @@ Term* Parser::parse_term() {
         Term* a = parse_term();
         Term* b = parse_term();
         expect(RBRACK);
-        return program->table->createTerm(a, b);
+        return program->getSymbolTable()->createTerm(a, b);
     }
     else {
         syntax_error();

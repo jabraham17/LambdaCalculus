@@ -14,7 +14,7 @@ class SymbolTable {
     
     public:
 
-    SymbolTable(): defines(), expressions(), applications(), abstractions(), terms(), atoms(), variables(), names() {}
+    SymbolTable(): defines(), variables(), names(), terms() {}
 
     //check if a name already exists, if it does return the one that already exists
     Name* exists(std::string);

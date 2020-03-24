@@ -1,7 +1,2 @@
-@tru = $t. $f. t;
-@fls = $t. $f. f;
-@and = $a. $b. a b @fls;
-@tru x y;
-@fls x y;
-a (b c);
-(x);
+($x.   x  ($x.  x)  x  ($x. x )  x ) y z;
+($x.$y. x y) w z;

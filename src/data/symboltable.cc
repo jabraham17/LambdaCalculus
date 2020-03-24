@@ -34,8 +34,8 @@ Term* SymbolTable::createTerm(Variable* var, Term* body) {
     terms.push_back(t);
     return t;
 }
-Term* SymbolTable::createTerm(Term* a, Term* b, paren) {
-    Term* term = new Term(a, b);
+Term* SymbolTable::createTerm(Term* a, Term* b) {
+    Term* t = new Term(a, b);
     terms.push_back(t);
     return t;
 }

@@ -2,9 +2,9 @@
 
 
 Term::Term(Variable* var): type(VARIABLE), variable(var), name(NULL), t1(NULL), t2(NULL) {}
-Term::Term(Name* name): type(NAME), atom(atom), variable(NULL), name(name), t1(NULL), t2(NULL) {}
-Term::Term(Term* a, Term* b): type(ABSTRACTION), variable(NULL), name(NULL), t1(a), t2(b) {}
-Term::Term(Variable* var, Term* body): type(APPLICATION), variable(var), name(NULL), t1(body), t2(NULL) {}
+Term::Term(Name* name): type(NAME), variable(NULL), name(name), t1(NULL), t2(NULL) {}
+Term::Term(Term* a, Term* b): type(APPLICATION), variable(NULL), name(NULL), t1(a), t2(b) {}
+Term::Term(Variable* var, Term* body): type(ABSTRACTION), variable(var), name(NULL), t1(body), t2(NULL) {}
 Term::~Term(){}
 Term::Term(const Term& old) {
     type = old.type;
@@ -23,15 +23,15 @@ Term::Term(const Term& old) {
     else t2 = new Term(*(old.t2));
 }
 
-TermType Term::getType() {return type;}
-bool Term::isType(TermType t) {return type == t;}
+TermType Term::getType() const {return type;}
+bool Term::isType(TermType t) const {return type == t;}
 void Term::addParen() {paren = true;}
-bool Term::hasParen() {return paren}
-Variable* Term::getVariable() {return variable;}
-Name* Term::getName() {return name;}
-Term* Term::getTermA() {return t1;}
-Term* Term::getTermB() {return t2;}
-Term* Term::getBody() {return t1;}
+bool Term::hasParen() const {return paren;}
+Variable* Term::getVariable() const {return variable;}
+Name* Term::getName() const {return name;}
+Term* Term::getTermA() const {return t1;}
+Term* Term::getTermB() const {return t2;}
+Term* Term::getBody() const {return t1;}
 
 //its a definition if its a name
 bool Term::isDefinition() {return isType(NAME);}
@@ -43,7 +43,7 @@ bool Term::isValue() {return !isBetaRedex();}
 //get a list of parameters in function (t) that contain variables bound to parameter
 //parameters are the variable to a abstraction
 //TODO
-std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
+/*std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
     std::vector<Term**> res;
     //if this is an abstraction, check the param and call on the body
     if((*term)->getType() == Term::ABS) {
@@ -121,32 +121,34 @@ void replaceVariable(Term*& t, Variable** v, Term* tp) {
         replaceVariable(t->application->a, v, tp);
         replaceVariable(t->application->b, v, tp);
     }
-}
+}*/
 
-//TODO
 std::ostream& operator<<(std::ostream& out, const Term& t) {
 
     if(t.paren) out << "(";
 
-    /*if(lhs.isType(VARIABLE)) out;
-    if(lhs.isType(NAME)) return *(lhs.name) == *(rhs.name);
-    if(lhs.isType(ABSTRACTION)) return *(lhs.variable) == *(rhs.variable) && *(lhs.getBody()) == *(rhs.getBody());
-    if(lhs.isType(APPLICATION)) return *(lhs.getTermA()) == *(rhs.getTermA()) && *(lhs.getTermB()) == *(rhs.getTermB());*/
+    if(t.isType(VARIABLE)) out << *(t.variable);
+    else if(t.isType(NAME)) out << *(t.name);
+    else if(t.isType(APPLICATION)) out << *(t.getTermA()) << " " << *(t.getTermB());
+    else if(t.isType(ABSTRACTION)) out << "λ" << *(t.variable) << ". " << *(t.getBody());
 
     if(t.paren) out << ")";
 
     return out;
 }
-//TODO
 std::string Term::toJSON() {
     std::stringstream s;
     s << "\"term\":{";
     if(hasParen()) s << "\"parentheses\":true,";
     if(isBetaRedex()) s << "\"beta-redex\":true,";
 
-    /*if(type == ATOM) s << atom->toJSON();
-    else if(type == ABS) s << abstraction->toJSON();
-    else if(type == APP) s << application->toJSON();*/
+    if(isType(VARIABLE))
+        if (variable->isBound())
+            s << "\"variable\":{" << variable->toJSON() << ",\"boundTo\":" << variable->getBoundTo()->getName() << "}";
+        else s << variable->toJSON();
+    else if(isType(NAME)) s << name->toJSON();
+    else if(isType(APPLICATION)) s << "\"A\":{" << getTermA()->toJSON() << "},\"B\":{" << getBody()->toJSON() << "}";
+    else if(isType(ABSTRACTION)) s << variable->toJSON() << "," << getBody()->toJSON();
 
     s << "}";
     return s.str();

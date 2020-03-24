@@ -22,7 +22,7 @@ int main()
     prog = parser.getProgram();
 
     //read the library
-    prog->readLibrary("library/boolean.lcl");
+    /*prog->readLibrary("library/boolean.lcl");
     prog->readLibrary("library/arithmetic.lcl");
     prog->readLibrary("library/number.lcl");
     prog->readLibrary("library/pair.lcl");
@@ -33,7 +33,7 @@ int main()
     //reduce in normal order
     prog->determineBinding();
     prog->betaReduceNormalOrder();
-    prog->checkForDefines();
+    prog->checkForDefines();*/
 
     std::cout << *prog << std::endl;
 

@@ -5,35 +5,30 @@
 #include <ostream>
 #include <sstream>
 
-#include "Expression.h"
 #include "symboltable.h"
 #include "Define.h"
 
 class Program {
-    private:
-    //TODO: make these private and add accesors
-    public:
-    std::vector<Expression*> statements;
+private:
+    std::vector<Term*> statements;
     SymbolTable* table;
     std::vector<Define*> library;
 
-    public:
-    Program(): statements(), table(new SymbolTable()), library() {}
-    ~Program() {
-        delete(table);
-    }
-    friend std::ostream& operator<<(std::ostream& out, const Program& p) {
-        std::string sep;
-        for(auto state: p.statements) {
-            out << sep << *state;
-            sep = '\n';
-        }
-        return out;
-    }
+public:
+    Program();
+    ~Program();
 
+    std::vector<Term*> getStatements() const;
+    void addStatement(Term*);
+    SymbolTable* getSymbolTable();
+    std::vector<Define*> getLibraryDefines();
+
+    friend std::ostream& operator<<(std::ostream&, const Program&);
     std::string toJSON();
 
-    std::vector<Define*> allDefines();
+
+    //TODO
+    /*std::vector<Define*> allDefines();
 
     //determine all abstarctions bindings
     void determineBinding();
@@ -47,7 +42,7 @@ class Program {
     void readLibrary(std::string);
 
     //check if this statement can be expressed as a define
-    void checkForDefines();
+    void checkForDefines();*/
 
 };
 

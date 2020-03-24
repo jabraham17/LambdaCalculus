@@ -31,15 +31,15 @@ class Term {
     //define a copy constructor
     Term(const Term&);
 
-    TermType getType();
-    bool isType(TermType);
+    TermType getType() const;
+    bool isType(TermType) const;
     void addParen();
-    bool hasParen();
-    Variable* getVariable();
-    Name* getName();
-    Term* getTermA();
-    Term* getTermB();
-    Term* getBody();
+    bool hasParen() const;
+    Variable* getVariable() const;
+    Name* getName() const;
+    Term* getTermA() const;
+    Term* getTermB() const;
+    Term* getBody() const;
 
     bool isDefinition();
     bool isBetaRedex();

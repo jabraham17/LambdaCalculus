@@ -174,5 +174,21 @@
    "bin/Define.o"
   ],
   "file": "src/data/Define.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-Wextra",
+   "-c",
+   "src/data/Variable.cc",
+   "-o",
+   "bin/Variable.o"
+  ],
+  "file": "src/data/Variable.cc"
  }
 ]

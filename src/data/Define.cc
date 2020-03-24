@@ -1,11 +1,11 @@
 
 #include "Define.h"
 
-Define(Name* name, Term* term): name(name), term(term) {}
-~Define(){}
+Define::Define(Name* name, Term* term): name(name), term(term) {}
+Define::~Define(){}
 
-Name* getName() {return name;}
-Term* getTerm() {return term;}
+Name* Define::getName() {return name;}
+Term* Define::getTerm() {return term;}
 
 std::ostream& operator<<(std::ostream& out, const Define& d) {
 

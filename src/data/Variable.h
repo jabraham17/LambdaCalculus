@@ -6,55 +6,36 @@
 #include <sstream>
 
 class Variable {
-    private:
-    int id;
+private:
     std::string name;
     //the parameter this variable is bound to
     Variable* boundTo;
 
-    public:
+public:
     //all variables are assumed free at initialization
-    Variable(int id, std::string name): id(id), name(name), boundTo(NULL) {}
-    ~Variable(){}
-
+    Variable(std::string);
+    ~Variable();
     //define a copy constructor
-    Variable(const Variable& old) {
-        id = -1;
-        name = old.name;
-        boundTo = old.boundTo;
-    }
+    Variable(const Variable&);
 
-    int ID() {
-        return id;
-    }
+    void setName(std::string s);
+    std::string getName();
 
-    void setName(std::string s) {name = s;}
-    std::string getName() {return name;}
-
-    void setBoundTo(Variable* v) {boundTo = v;}
-    Variable* getBoundTo() {return boundTo;}
-    bool isBound() {return boundTo != NULL;}
-    bool isFree() {return !isBound();}
+    void setBoundTo(Variable* v);
+    Variable* getBoundTo();
+    bool isBound();
+    bool isFree();
 
     //determine if this is bound to var v
     //v is the parameter of the abstraction
-    bool isBoundTo(Variable* v) {
-        return boundTo != NULL && (*v == *boundTo);
-    }
+    bool isBoundTo(Variable* v);
 
-    std::string toJSON() {
-        std::stringstream s;
-        s << "\"variable\":\"" << name <<  "\"";
-        return s.str();
-    }
 
-    friend std::ostream& operator<<(std::ostream& out, const Variable& v) {
-        out << v.name;
-        return out;
-    }
+    friend std::ostream& operator<<(std::ostream&, const Variable&);
+    std::string toJSON();
 
-    friend bool operator==(const Variable& lhs, const Variable& rhs) { return lhs.name == rhs.name; }
-    friend bool operator!=(const Variable& lhs, const Variable& rhs) { return !(lhs == rhs); }
+    friend bool operator==(const Variable&, const Variable&);
+    friend bool operator!=(const Variable&, const Variable&);
 };
 
 #endif
