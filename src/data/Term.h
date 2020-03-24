@@ -5,69 +5,51 @@
 #include <ostream>
 #include <sstream>
 
-#include "Application.h"
-#include "Abstraction.h"
-#include "Atom.h"
 #include <vector>
+#include "Variable.h"
 
 
-class Abstraction;
-class Application;
-std::ostream& operator<<(std::ostream&, const Abstraction&);
-std::ostream& operator<<(std::ostream&, const Application&);
+enum TermType { VARIABLE=0, NAME, ABSTRACTION, APPLICATION};
+
 class Term {
     private:
-    int id;
-    public: //the type needs to be public
-    enum Type { ATOM=0, ABS, APP};
-    private:
-    public: //TODO: make getters and setters
-    Type type;
+    TermType type;
     //whether the use decided to put parentheses around this
     bool paren;
-    Atom* atom;
-    Abstraction* abstraction;
-    Application* application;
+    Variable* variable;
+    Name* name;
+    Term* t1;
+    Term* t2;
 
     public:
-    Term(int, Atom*, bool);
-    Term(int, Abstraction*, bool);
-    Term(int, Application*, bool);
+    Term(Variable*);
+    Term(Name*);
+    Term(Term*, Term*);
+    Term(Variable*, Term*);
     ~Term();
-
     //define a copy constructor
     Term(const Term&);
 
-    std::string toJSON();
-
-
-    int ID() {return id;}
-    Type getType() {return type;}
-
-    void addParen() { paren = true; }
-    bool hasParen() {return paren; }
+    TermType getType();
+    bool isType(TermType);
+    void addParen();
+    bool hasParen();
+    Variable* getVariable();
+    Name* getName();
+    Term* getTermA();
+    Term* getTermB();
+    Term* getBody();
 
     bool isDefinition();
     bool isBetaRedex();
+    //its a value if not reducible
+    bool isValue();
     friend void applyBetaRedex(Term*&);
     friend void replaceVariable(Term*&, Variable**, Term*);
 
-    //its a value, values are not reducible
-    bool isValue() { return !this->isBetaRedex(); }
 
-
-    friend std::ostream& operator<<(std::ostream& out, const Term& t) {
-
-        if(t.paren) out << "(";
-
-        if(t.type == ATOM) out << *(t.atom);
-        else if(t.type == ABS) out << *(t.abstraction);
-        else if(t.type == APP) out << *(t.application);
-
-        if(t.paren) out << ")";
-
-        return out;
-    }
+    friend std::ostream& operator<<(std::ostream& out, const Term& t);
+    std::string toJSON();
 
     friend bool operator==(const Term& lhs, const Term& rhs);
     friend bool operator!=(const Term& lhs, const Term& rhs);

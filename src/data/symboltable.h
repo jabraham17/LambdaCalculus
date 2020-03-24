@@ -27,35 +27,19 @@ class SymbolTable {
 
 
     //create blanks elements
-    Define* createDefine(Name*, Expression*);
-    Expression* createExpression(Term*);
-    Application* createApplication(Term*, Term*);
-    Abstraction* createAbstraction(Variable*, Term*);
-    Term* createTerm(Atom*, bool);
-    Term* createTerm(Application*, bool);
-    Term* createTerm(Abstraction*, bool);
-    Atom* createAtom(Name*);
-    Atom* createAtom(Variable*);
+    Define* createDefine(Name*, Term*);
+    Term* createTerm(Variable*);
+    Term* createTerm(Name*);
+    Term* createTerm(Variable*, Term*);
+    Term* createTerm(Term*, Term*);
     Variable* createVariable(std::string);
     Name* createName(std::string);
 
 
-    private:
-    //dont directly use this, use the method
-    int id = 0;
-    int ID() { return id++; }
-
-    //TODO: add getters for these
-public:
     std::vector<Define*> defines;
-    std::vector<Expression*> expressions;
-    std::vector<Application*> applications;
-    //TODO: abstratcuons will identify binding when built
-    std::vector<Abstraction*> abstractions;
-    std::vector<Term*> terms;
-    std::vector<Atom*> atoms;
     std::vector<Variable*> variables;
     std::vector<Name*> names;
+    std::vector<Term*> terms;
 };
 
 

@@ -59,8 +59,8 @@ void Parser::parse_lines() {
         parse_lines();
     }
 }
-//line -> expr ;
-//line -> define ;
+//line -> term SEMICOLON
+//line -> define SEMICOLON
 void Parser::parse_line() {
 
     //define starts with an AT
@@ -88,11 +88,11 @@ void Parser::parse_line() {
             t1.token_type == LCURLY ||
             t1.token_type == LBRACK) {
 
-        Expression* expr = parse_expr();
+        Term* t = parse_term();
         expect(SEMICOLON);
 
         //add the expression to the list of statements
-        program->statements.push_back(expr);
+        program->statements.push_back(t);
 
     }
     else {
@@ -100,19 +100,13 @@ void Parser::parse_line() {
         syntax_error();
     }
 }
-//expr -> term
-Expression* Parser::parse_expr() {
-    Term* term = parse_term();
-    Expression* expr = program->table->createExpression(term);
-    return expr;
-}
-//define -> name EQUALS expr
+//define -> name EQUALS term
 Define* Parser::parse_define() {
     Name* name = parse_name();
     expect(EQUALS);
-    Expression* expr = parse_expr();
+    Term* t = parse_term();
 
-    Define* d = program->table->createDefine(name, expr);
+    Define* d = program->table->createDefine(name, t);
     return d;
 }
 //var -> ID
@@ -128,39 +122,24 @@ Name* Parser::parse_name() {
     return program->table->createName(t.lexeme);
 }
 
-//atom -> var
-//atom -> name
-Atom* Parser::parse_atom() {
-    Token t = preprocessor.peek();
-    if(t.token_type == ID) {
-        Variable* newVar  = parse_var();
-        return program->table->createAtom(newVar);
-    }
-    else if (t.token_type == AT) {
-        Name* newName = parse_name();
-        return program->table->createAtom(newName);
-    }
-    else {
-        syntax_error();
-    }
-    return NULL;
-}
-
-//1. term -> atom
-//2. term -> LPAREN term RPAREN
-//3. term -> LCURLY LAMBDA var DOT term RCURLY
-//4. term -> LBRACK term term RBRACK
+//1. term -> variable
+//2. term -> name
+//3. term -> LPAREN term RPAREN
+//4. term -> LCURLY LAMBDA variable DOT term RCURLY
+//5. term -> LBRACK term term RBRACK
 Term* Parser::parse_term() {
 
     Token t = preprocessor.peek();
 
     //1
-    if(t.token_type == ID ||
-       t.token_type == AT) {
-        Atom* atom = parse_atom();
-        return program->table->createTerm(atom, false);
+    if(t.token_type == ID) {
+        Variable* newVar = parse_var();
     }
     //2
+    else if(t.token_type == AT) {
+        Name* newName = parse_name();
+    }
+    //3
     else if(t.token_type == LPAREN) {
         expect(LPAREN);
         Term* term = parse_term();
@@ -168,7 +147,7 @@ Term* Parser::parse_term() {
         expect(RPAREN);
         return term;
     }
-    //3
+    //4
     else if(t.token_type == LCURLY) {
         expect(LCURLY);
         expect(LAMBDA);
@@ -176,17 +155,15 @@ Term* Parser::parse_term() {
         expect(DOT);
         Term* term = parse_term();
         expect(RCURLY);
-        Abstraction* abs = program->table->createAbstraction(var, term);
-        return program->table->createTerm(abs, false);
+        return program->table->createTerm(var, term);
     }
-    //4
+    //5
     else if(t.token_type == LBRACK) {
         expect(LBRACK);
         Term* a = parse_term();
         Term* b = parse_term();
         expect(RBRACK);
-        Application* app = program->table->createApplication(a, b);
-        return program->table->createTerm(app, false);
+        return program->table->createTerm(a, b);
     }
     else {
         syntax_error();

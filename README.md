@@ -19,19 +19,19 @@ RCURLY    -> }
 ```
 __Parser__
 ```
-input  -> lines
-lines  -> line
-lines  -> line lines
-line   -> term SEMICOLON
-line   -> define SEMICOLON
-define -> name EQUALS term
-var    -> ID
-name   -> AT ID
-term   -> var
-term   -> name
-term   -> LPAREN term RPAREN
-term   -> LCURLY LAMBDA var DOT term RCURLY
-term   -> LBRACK term term RBRACK
+input    -> lines
+lines    -> line
+lines    -> line lines
+line     -> term SEMICOLON
+line     -> define SEMICOLON
+define   -> name EQUALS term
+variable -> ID
+name     -> AT ID
+term     -> variable
+term     -> name
+term     -> LPAREN term RPAREN
+term     -> LCURLY LAMBDA variable DOT term RCURLY
+term     -> LBRACK term term RBRACK
 ```
 
 This is the official grammar. However, curly braces (`{ }`) and square brackets (`[ ]`) are generally ommitted.

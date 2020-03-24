@@ -14,67 +14,43 @@ Name* SymbolTable::exists(std::string s) {
     return found;
 }
 
-
-Define* SymbolTable::createDefine(Name* n, Expression* e) {
-    Define* d = new Define(ID(), n, e);
+Define* SymbolTable::createDefine(Name* name, Term* term) {
+    Define* d = new Define(name, term);
     defines.push_back(d);
     return d;
 }
-Expression* SymbolTable::createExpression(Term* t) {
-    Expression* expr = new Expression(ID(), t);
-    expressions.push_back(expr);
-    return expr;
+Term* SymbolTable::createTerm(Variable* var) {
+    Term* t = new Term(var);
+    terms.push_back(t);
+    return t;
 }
-Application* SymbolTable::createApplication(Term* a, Term* b) {
-    Application* app = new Application(ID(), a, b);
-    applications.push_back(app);
-    return app;
+Term* SymbolTable::createTerm(Name* name) {
+    Term* t = new Term(name);
+    terms.push_back(t);
+    return t;
 }
-Abstraction* SymbolTable::createAbstraction(Variable* v, Term* t) {
-    Abstraction* abs = new Abstraction(ID(), v, t);
-    abstractions.push_back(abs);
-    return abs;
+Term* SymbolTable::createTerm(Variable* var, Term* body) {
+    Term* t = new Term(var, body);
+    terms.push_back(t);
+    return t;
 }
-Term* SymbolTable::createTerm(Atom* a, bool hasParen) {
-    Term* term = new Term(ID(), a, hasParen);
-    terms.push_back(term);
-    return term;
-}
-Term* SymbolTable::createTerm(Application* a, bool hasParen) {
-    Term* term = new Term(ID(), a, hasParen);
-    terms.push_back(term);
-    return term;
-}
-Term* SymbolTable::createTerm(Abstraction*a , bool hasParen) {
-    Term* term = new Term(ID(), a, hasParen);
-    terms.push_back(term);
-    return term;
-}
-Atom* SymbolTable::createAtom(Name* n) {
-    Atom* at = new Atom(ID(), n);
-    atoms.push_back(at);
-    return at;
-}
-Atom* SymbolTable::createAtom(Variable* v) {
-    Atom* at = new Atom(ID(), v);
-    atoms.push_back(at);
-    return at;
+Term* SymbolTable::createTerm(Term* a, Term* b, paren) {
+    Term* term = new Term(a, b);
+    terms.push_back(t);
+    return t;
 }
 Variable* SymbolTable::createVariable(std::string s) {
-    Variable* var = new Variable(ID(), s);
+    Variable* var = new Variable(s);
     variables.push_back(var);
     return var;
 }
 //only create a new one if it doesnt already exist
 Name* SymbolTable::createName(std::string s) {
     Name* name = exists(s);
-
     //doesnt exist
     if(name == NULL) {
-        name = new Name(ID(), s);
+        name = new Name(s);
         names.push_back(name);
     }
-
     return name;
 }
-

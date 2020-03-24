@@ -1,51 +1,56 @@
 #include "Term.h"
 
-Term::Term(int id, Atom* atom, bool paren): id(id), type(ATOM), paren(paren), atom(atom), abstraction(NULL), application(NULL) {}
-Term::Term(int id, Abstraction* abs, bool paren): id(id), type(ABS), paren(paren), atom(NULL), abstraction(abs), application(NULL) {}
-Term::Term(int id, Application* app, bool paren): id(id), type(APP), paren(paren), atom(NULL), abstraction(NULL), application(app) {}
+
+
+/*
+ *     Variable* variable;
+    Name* name;
+    Term* t1;
+    Term* t2;
+ */
+
+Term::Term(Variable* var): type(VARIABLE), variable(var), name(NULL), t1(NULL), t2(NULL) {}
+Term::Term(Name* name): type(NAME), atom(atom), variable(NULL), name(name), t1(NULL), t2(NULL) {}
+Term::Term(Term* a, Term* b): type(ABSTRACTION), variable(NULL), name(NULL), t1(a), t2(b) {}
+Term::Term(Variable* var, Term* body): type(APPLICATION), variable(var), name(NULL), t1(body), t2(NULL) {}
 Term::~Term(){}
 Term::Term(const Term& old) {
-    id = -1;
     type = old.type;
     paren = old.paren;
-    if(old.atom == NULL) atom = NULL;
-    else atom = new Atom(*(old.atom));
 
-    if(old.abstraction == NULL) abstraction = NULL;
-    else abstraction = new Abstraction(*(old.abstraction));
+    if(old.variable == NULL) variable = NULL;
+    else variable = new Variable(*(old.variable));
 
-    if(old.application == NULL) application = NULL;
-    else application = new Application(*(old.application));
+    if(old.name == NULL) name = NULL;
+    else name = new Name(*(old.name));
+
+    if(old.t1 == NULL) t1 = NULL;
+    else t1 = new Term(*(old.t1));
+
+    if(old.t2 == NULL) t2 = NULL;
+    else t2 = new Term(*(old.t2));
 }
 
-std::string Term::toJSON() {
-    std::stringstream s;
-    s << "\"term\":{";
-    if(hasParen()) s << "\"parentheses\":true,";
-    if(isBetaRedex()) s << "\"beta-redex\":true,";
+TermType Term::getType() {return type;}
+bool Term::isType(TermType t) {return type == t;}
+void Term::addParen() {paren = true;}
+bool Term::hasParen() {return paren}
+Variable* Term::getVariable() {return variable;}
+Name* Term::getName() {return name;}
+Term* Term::getTermA() {return t1;}
+Term* Term::getTermB() {return t2;}
+Term* Term::getBody() {return t1;}
 
-    if(type == ATOM) s << atom->toJSON();
-    else if(type == ABS) s << abstraction->toJSON();
-    else if(type == APP) s << application->toJSON();
-    s << "}";
-    return s.str();
-}
-
-//its a defition if its an atom and a name
-bool Term::isDefinition() {
-    return this->getType() == ATOM && this->atom->getType() == Atom::NAME;
-}
-
-//if this term is an application and (the application's a term is an abstraction or a definition
-bool Term::isBetaRedex() {
-
-    return type == APP && (this->application->a->getType() == Term::ABS || this->application->a->isDefinition());
-}
-
-
+//its a definition if its a name
+bool Term::isDefinition() {return isType(NAME);}
+//if this term is an application and (the application's a term is an abstraction
+bool Term::isBetaRedex() {return isType(APPLICATION) && getTermA()->isType(ABSTRACTION);}
+//its a value if not reducible
+bool Term::isValue() {return !isBetaRedex();}
 
 //get a list of parameters in function (t) that contain variables bound to parameter
 //parameters are the variable to a abstraction
+//TODO
 std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
     std::vector<Term**> res;
     //if this is an abstraction, check the param and call on the body
@@ -60,7 +65,7 @@ std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
             res.push_back(t);
         }
     }
-    //if this is an application, apply to left and right
+        //if this is an application, apply to left and right
     else if((*term)->getType() == Term::APP) {
         std::vector<Term**> a = listOfBoundParameter(param, &((*term)->application->a));
         std::vector<Term**> b = listOfBoundParameter(param, &((*term)->application->b));
@@ -79,7 +84,7 @@ std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
 //this is a valid redex so self is an application with 'a' as an abstraction
 //therefore we can get the variable and the term from it
 //the replacement term, tprime, is the 'b' of the abstraction
-#include <iostream>
+//TODO
 void applyBetaRedex(Term*& self) {
 
     //the function we are replacing
@@ -109,30 +114,62 @@ void applyBetaRedex(Term*& self) {
 }
 
 //for all the varaiables in t, replace them with tprime(tp)
+//TODO
 void replaceVariable(Term*& t, Variable** v, Term* tp) {
     //if its an atom and the var is bound, replace with tp
     if(t->type == Term::Type::ATOM && t->atom->getType() == Atom::VAR && t->atom->variable->isBoundTo(*v)) {
         t = tp;
     }
-    //if an abstraction, call recursivly on abstraction body
+        //if an abstraction, call recursivly on abstraction body
     else if(t->type == Term::Type::ABS) {
         replaceVariable(t->abstraction->term, v, tp);
     }
-    //if an application, call recursivly on both terms
+        //if an application, call recursivly on both terms
     else if(t->type == Term::Type::APP) {
         replaceVariable(t->application->a, v, tp);
         replaceVariable(t->application->b, v, tp);
     }
 }
 
+//TODO
+std::ostream& operator<<(std::ostream& out, const Term& t) {
+
+    if(t.paren) out << "(";
+
+    /*if(lhs.isType(VARIABLE)) out;
+    if(lhs.isType(NAME)) return *(lhs.name) == *(rhs.name);
+    if(lhs.isType(ABSTRACTION)) return *(lhs.variable) == *(rhs.variable) && *(lhs.getBody()) == *(rhs.getBody());
+    if(lhs.isType(APPLICATION)) return *(lhs.getTermA()) == *(rhs.getTermA()) && *(lhs.getTermB()) == *(rhs.getTermB());*/
+
+    if(t.paren) out << ")";
+
+    return out;
+}
+//TODO
+std::string Term::toJSON() {
+    std::stringstream s;
+    s << "\"term\":{";
+    if(hasParen()) s << "\"parentheses\":true,";
+    if(isBetaRedex()) s << "\"beta-redex\":true,";
+
+    /*if(type == ATOM) s << atom->toJSON();
+    else if(type == ABS) s << abstraction->toJSON();
+    else if(type == APP) s << application->toJSON();*/
+
+    s << "}";
+    return s.str();
+}
+
 bool operator==(const Term& lhs, const Term& rhs) {
     if(lhs.type == rhs.type) {
-        if(lhs.type == Term::ATOM) return *(lhs.atom) == *(rhs.atom);
-        if(lhs.type == Term::ABS) return *(lhs.abstraction) == *(rhs.abstraction);
-        if(lhs.type == Term::APP) return *(lhs.application) == *(rhs.application);
+        if(lhs.isType(VARIABLE)) return *(lhs.variable) == *(rhs.variable);
+        if(lhs.isType(NAME)) return *(lhs.name) == *(rhs.name);
+        if(lhs.isType(ABSTRACTION)) return *(lhs.variable) == *(rhs.variable) && *(lhs.getBody()) == *(rhs.getBody());
+        if(lhs.isType(APPLICATION)) return *(lhs.getTermA()) == *(rhs.getTermA()) && *(lhs.getTermB()) == *(rhs.getTermB());
     }
     return false;
 }
+
 bool operator!=(const Term& lhs, const Term& rhs) {
     return !(lhs == rhs);
 }

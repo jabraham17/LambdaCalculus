@@ -41,13 +41,14 @@ class Parser {
     void parse_line();
     //define -> name EQUALS term
     Define* parse_define();
-    //var -> ID
-    Variable* parse_var();
+    //variable -> ID
+    Variable* parse_variable();
     //name -> AT ID
     Name* parse_name();
-    //term -> atom
+    //term -> variable
+    //term -> name
     //term -> LPAREN term RPAREN
-    //term -> LCURLY LAMBDA var DOT term RCURLY
+    //term -> LCURLY LAMBDA variable DOT term RCURLY
     //term -> LBRACK term term RBRACK
     Term* parse_term();
 
