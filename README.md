@@ -22,15 +22,13 @@ __Parser__
 input  -> lines
 lines  -> line
 lines  -> line lines
-line   -> expr SEMICOLON
+line   -> term SEMICOLON
 line   -> define SEMICOLON
-define -> name EQUALS expr
-expr   -> term
+define -> name EQUALS term
 var    -> ID
 name   -> AT ID
-atom   -> var
-atom   -> name
-term   -> atom
+term   -> var
+term   -> name
 term   -> LPAREN term RPAREN
 term   -> LCURLY LAMBDA var DOT term RCURLY
 term   -> LBRACK term term RBRACK

@@ -36,20 +36,15 @@ class Parser {
     //lines -> line
     //lines -> line lines
     void parse_lines();
-    //line -> expr SEMICOLON
+    //line -> term SEMICOLON
     //line -> define SEMICOLON
     void parse_line();
-    //expr -> term
-    Expression* parse_expr();
-    //define -> name EQUALS expr
+    //define -> name EQUALS term
     Define* parse_define();
     //var -> ID
     Variable* parse_var();
     //name -> AT ID
     Name* parse_name();
-    //atom -> var
-    //atom -> name
-    Atom* parse_atom();
     //term -> atom
     //term -> LPAREN term RPAREN
     //term -> LCURLY LAMBDA var DOT term RCURLY
