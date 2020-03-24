@@ -1,14 +1,6 @@
 #include "Term.h"
 
 
-
-/*
- *     Variable* variable;
-    Name* name;
-    Term* t1;
-    Term* t2;
- */
-
 Term::Term(Variable* var): type(VARIABLE), variable(var), name(NULL), t1(NULL), t2(NULL) {}
 Term::Term(Name* name): type(NAME), atom(atom), variable(NULL), name(name), t1(NULL), t2(NULL) {}
 Term::Term(Term* a, Term* b): type(ABSTRACTION), variable(NULL), name(NULL), t1(a), t2(b) {}

@@ -5,16 +5,10 @@
 
 #include <vector>
 
-#include "Expression.h"
 #include "Define.h"
-#include "Application.h"
-#include "Abstraction.h"
 #include "Term.h"
-#include "Atom.h"
 #include "Variable.h"
 #include "Name.h"
-
-//TODO: add fucntions for adding stuff with global ids so every element is marked as 'unique' and no duplicates exist
 
 class SymbolTable {
     

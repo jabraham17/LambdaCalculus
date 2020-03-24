@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "Variable.h"
+#include "Name.h"
 
 
 enum TermType { VARIABLE=0, NAME, ABSTRACTION, APPLICATION};

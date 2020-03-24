@@ -9,32 +9,23 @@
 
 #include "Name.h"
 #include "Term.h"
-#include "Expression.h"
 
 class Expression;
 
 class Define {
 private:
-    int id;
     Name* name;
-    Expression* expr;
-
+    Term* term;
 
 public:
-    Define(int id, Name* name, Expression* expr): id(id), name(name), expr(expr) {}
-    ~Define(){}
+    Define(Name*, Term*);
+    ~Define();
 
-    Name* getName() {return name;}
-    Expression* getExpression() {return expr;}
-
-    std::string toJSON();
-
-
-    int ID() {
-        return id;
-    }
+    Name* getName();
+    Term* getTerm();
 
     friend std::ostream& operator<<(std::ostream&, const Define&);
+    std::string toJSON();
 };
 
 #endif
