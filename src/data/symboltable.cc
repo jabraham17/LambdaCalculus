@@ -1,6 +1,11 @@
 #include "symboltable.h"
 
 
+int ParameterID::param_id = 1;
+int ParameterID::ID() {
+    return param_id++;
+}
+
 Name* SymbolTable::exists(std::string s) {
     //check for name
     Name* found = NULL;
@@ -41,6 +46,11 @@ Term* SymbolTable::createTerm(Term* a, Term* b) {
 }
 Variable* SymbolTable::createVariable(std::string s) {
     Variable* var = new Variable(s);
+    variables.push_back(var);
+    return var;
+}
+Variable* SymbolTable::createParameter(std::string s) {
+    Variable* var = new Variable(s, ParameterID::ID());
     variables.push_back(var);
     return var;
 }

@@ -10,10 +10,14 @@ private:
     std::string name;
     //the parameter this variable is bound to
     Variable* boundTo;
+    //if its a parameter, it has an id
+    bool isParam;
+    int id;
 
 public:
     //all variables are assumed free at initialization
     Variable(std::string);
+    Variable(std::string, int);
     ~Variable();
     //define a copy constructor
     Variable(const Variable&);
@@ -25,6 +29,9 @@ public:
     Variable* getBoundTo();
     bool isBound();
     bool isFree();
+    void makeParameter(int);
+    bool isParameter();
+    int getID();
 
     //determine if this is bound to var v
     //v is the parameter of the abstraction

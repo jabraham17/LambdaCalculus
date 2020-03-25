@@ -36,6 +36,7 @@ int main()
     prog->checkForDefines();*/
 
     std::cout << *prog << std::endl;
+    std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 
 
 

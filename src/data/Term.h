@@ -11,6 +11,7 @@
 
 
 enum TermType { VARIABLE=0, NAME, ABSTRACTION, APPLICATION};
+std::string getTermTypeName(TermType t);
 
 class Term {
     private:
@@ -40,6 +41,11 @@ class Term {
     Term* getTermA() const;
     Term* getTermB() const;
     Term* getBody() const;
+    Variable*& getVariable();
+    Name*& getName();
+    Term*& getTermA();
+    Term*& getTermB();
+    Term*& getBody();
 
     bool isDefinition();
     bool isBetaRedex();
@@ -47,6 +53,10 @@ class Term {
     bool isValue();
     friend void applyBetaRedex(Term*&);
     friend void replaceVariable(Term*&, Variable**, Term*);
+
+    //determine the binding for the vars in this
+    void determineBinding();
+    friend void determineBinding(Variable*&, Term*&);
 
 
     friend std::ostream& operator<<(std::ostream& out, const Term& t);

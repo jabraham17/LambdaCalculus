@@ -10,7 +10,13 @@
 #include "Variable.h"
 #include "Name.h"
 
+namespace ParameterID {
+    extern int param_id;
+    int ID();
+}
+
 class SymbolTable {
+
     
     public:
 
@@ -27,6 +33,7 @@ class SymbolTable {
     Term* createTerm(Variable*, Term*);
     Term* createTerm(Term*, Term*);
     Variable* createVariable(std::string);
+    Variable* createParameter(std::string);
     Name* createName(std::string);
 
 

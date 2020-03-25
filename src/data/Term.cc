@@ -1,10 +1,17 @@
 #include "Term.h"
 
+std::string getTermTypeName(TermType t) {
+    std::string names[] = {"VARIABLE", "NAME", "ABSTRACTION", "APPLICATION"};
+    return names[t];
+}
 
 Term::Term(Variable* var): type(VARIABLE), variable(var), name(NULL), t1(NULL), t2(NULL) {}
 Term::Term(Name* name): type(NAME), variable(NULL), name(name), t1(NULL), t2(NULL) {}
 Term::Term(Term* a, Term* b): type(APPLICATION), variable(NULL), name(NULL), t1(a), t2(b) {}
-Term::Term(Variable* var, Term* body): type(ABSTRACTION), variable(var), name(NULL), t1(body), t2(NULL) {}
+Term::Term(Variable* var, Term* body): type(ABSTRACTION), variable(var), name(NULL), t1(body), t2(NULL) {
+    //determine the binding of the abstratction
+    determineBinding();
+}
 Term::~Term(){}
 Term::Term(const Term& old) {
     type = old.type;
@@ -32,6 +39,11 @@ Name* Term::getName() const {return name;}
 Term* Term::getTermA() const {return t1;}
 Term* Term::getTermB() const {return t2;}
 Term* Term::getBody() const {return t1;}
+Variable*& Term::getVariable() {return variable;}
+Name*& Term::getName() {return name;}
+Term*& Term::getTermA() {return t1;}
+Term*& Term::getTermB() {return t2;}
+Term*& Term::getBody() {return t1;}
 
 //its a definition if its a name
 bool Term::isDefinition() {return isType(NAME);}
@@ -123,6 +135,41 @@ void replaceVariable(Term*& t, Variable** v, Term* tp) {
     }
 }*/
 
+
+//determine the binding for this abstraction
+//go through all the terms in an abstraction
+//we call this terms (abstarction) variable the parameter
+//if term is a variable that matches the parameter, it is bound
+//if the term is a abstarction with a variable that matches the parameter, do not bind anything inside of it
+void determineBinding(Variable*& param, Term*& term) {
+
+    //if this is a variable that is the same as the parameter
+    //this is a base case
+    if(term->isType(VARIABLE) && *param == *(term->getVariable())) {
+        term->getVariable()->setBoundTo(param);
+        return;
+    }
+    //if this is an abstraction and the abstractions variable is the same as the parameter, skip
+    //otherwise process the abstraction body
+    if(term->isType(ABSTRACTION)) {
+        if(*(term->getVariable()) == *param) return;
+        else {
+            determineBinding(param, term->getBody());
+            return;
+        }
+    }
+    //if this is an application, apply to left and right
+    if(term->isType(APPLICATION)) {
+        determineBinding(param, term->getTermA());
+        determineBinding(param, term->getTermB());
+        return;
+    }
+}
+void Term::determineBinding() {
+    ::determineBinding(this->getVariable(), this->getBody());
+}
+
+
 std::ostream& operator<<(std::ostream& out, const Term& t) {
 
     if(t.paren) out << "(";
@@ -138,19 +185,33 @@ std::ostream& operator<<(std::ostream& out, const Term& t) {
 }
 std::string Term::toJSON() {
     std::stringstream s;
-    s << "\"term\":{";
+
+    if(isType(VARIABLE)) s << variable->toJSON();
+    else if(isType(NAME)) s << name->toJSON();
+    else if(isType(ABSTRACTION)) {
+        s << "\"abstraction\":{";
+        s << variable->toJSON();
+        s << ",\"body\":{" << getBody()->toJSON() << "}}";
+    }
+    else if(isType(APPLICATION)) {
+        s << "\"application\":[";
+        s << "{" << getTermA()->toJSON() << "},{" << getTermB()->toJSON() << "}]";
+    }
+
+    /*s << "\"term\":{";
+    s << "\"type\":\"" << getTermTypeName(type) << "\",";
     if(hasParen()) s << "\"parentheses\":true,";
     if(isBetaRedex()) s << "\"beta-redex\":true,";
 
     if(isType(VARIABLE))
         if (variable->isBound())
-            s << "\"variable\":{" << variable->toJSON() << ",\"boundTo\":" << variable->getBoundTo()->getName() << "}";
+            s << "\"variable\":{" << variable->toJSON() << ",\"boundTo\":\"" << variable->getBoundTo()->getName() << "\"}";
         else s << variable->toJSON();
     else if(isType(NAME)) s << name->toJSON();
     else if(isType(APPLICATION)) s << "\"A\":{" << getTermA()->toJSON() << "},\"B\":{" << getBody()->toJSON() << "}";
     else if(isType(ABSTRACTION)) s << variable->toJSON() << "," << getBody()->toJSON();
 
-    s << "}";
+    s << "}";*/
     return s.str();
 }
 

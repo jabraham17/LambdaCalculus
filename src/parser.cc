@@ -154,6 +154,7 @@ Term* Parser::parse_term() {
         expect(LCURLY);
         expect(LAMBDA);
         Variable* var = parse_variable();
+        var->makeParameter(ParameterID::ID());
         expect(DOT);
         Term* term = parse_term();
         expect(RCURLY);
