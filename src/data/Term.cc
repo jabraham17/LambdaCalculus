@@ -186,6 +186,9 @@ std::ostream& operator<<(std::ostream& out, const Term& t) {
 std::string Term::toJSON() {
     std::stringstream s;
 
+    if(isBetaRedex()) s << "\"beta-redex\":true,";
+    if(hasParen()) s << "\"parentheses\":true,";
+
     if(isType(VARIABLE)) s << variable->toJSON();
     else if(isType(NAME)) s << name->toJSON();
     else if(isType(ABSTRACTION)) {
