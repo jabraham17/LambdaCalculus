@@ -147,26 +147,44 @@ void determineBinding(Variable*& param, Term*& term) {
     //this is a base case
     if(term->isType(VARIABLE) && *param == *(term->getVariable())) {
         term->getVariable()->setBoundTo(param);
-        return;
     }
-    //if this is an abstraction and the abstractions variable is the same as the parameter, skip
-    //otherwise process the abstraction body
-    if(term->isType(ABSTRACTION)) {
-        if(*(term->getVariable()) == *param) return;
-        else {
-            determineBinding(param, term->getBody());
-            return;
-        }
+    //if this is an abstraction and the abstractions variable is not same as the parameter
+    //process the abstraction body
+    else if(term->isType(ABSTRACTION) && *(term->getVariable()) != *param) {
+        determineBinding(param, term->getBody());
     }
     //if this is an application, apply to left and right
-    if(term->isType(APPLICATION)) {
+    else if(term->isType(APPLICATION)) {
         determineBinding(param, term->getTermA());
         determineBinding(param, term->getTermB());
-        return;
     }
 }
 void Term::determineBinding() {
     ::determineBinding(this->getVariable(), this->getBody());
+}
+
+
+void alphaRename(std::string newName, Variable*& param, Term*& term) {
+    //if this is a variable that is bound to the param, rename it
+    if(term->isType(VARIABLE) && term->variable->isBoundTo(param)) {
+        term->variable->setName(newName);
+    }
+        //if this is an abstraction, call on the body
+    else if(term->isType(ABSTRACTION)) {
+        alphaRename(newName, param, term->getBody());
+    }
+        //if this is an application, apply to left and right
+    else if(term->isType(APPLICATION)) {
+        alphaRename(newName, param, term->getTermA());
+        alphaRename(newName, param, term->getTermA());
+    }
+}
+//this is an abstraction, we rename parameter and all vars bound to it
+void Term::alphaRename(std::string newName) {
+    //rename all params in the body
+    ::alphaRename(newName, this->variable, this->getBody());
+    //now set the param to the newName
+    this->variable->setName(newName);
 }
 
 

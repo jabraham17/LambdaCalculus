@@ -58,6 +58,11 @@ class Term {
     void determineBinding();
     friend void determineBinding(Variable*&, Term*&);
 
+    //this is an abstraction, we rename parameter and all vars bound to it
+    void alphaRename(std::string);
+    friend void alphaRename(std::string, Variable*&, Term*&);
+
+
 
     friend std::ostream& operator<<(std::ostream& out, const Term& t);
     std::string toJSON();

@@ -25,9 +25,9 @@ void Variable::makeParameter(int id) {this->id = id; isParam = true;}
 bool Variable::isParameter() {return isParam;}
 int Variable::getID() {return id;};
 
-//determine if this is bound to var v
-//v is the parameter of the abstraction
-bool Variable::isBoundTo(Variable* v) {return boundTo != NULL && (*v == *boundTo);}
+//determine if this is bound to a param
+//its bound if the param if the ids match
+bool Variable::isBoundTo(Variable* param) {return boundTo != NULL && (param->id == boundTo->id);}
 
 
 std::ostream& operator<<(std::ostream& out, const Variable& v) {
