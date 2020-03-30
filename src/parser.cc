@@ -77,9 +77,11 @@ void Parser::parse_line() {
 
     //if t3 is EQUALS, we have a define
     if(t1.token_type == AT && t3.token_type == EQUALS) {
-        parse_define();
-        //define is already stored in symbol table, dont need to do anything further
+        Define* def = parse_define();
+        //add define to the list
         expect(SEMICOLON);
+
+        program->addUserDefine(def);
 
     }
     else if(t1.token_type == ID ||

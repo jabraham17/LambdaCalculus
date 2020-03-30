@@ -22,16 +22,16 @@ int main()
     prog = parser.getProgram();
 
     //read the library
-    /*prog->readLibrary("library/boolean.lcl");
-    prog->readLibrary("library/arithmetic.lcl");
-    prog->readLibrary("library/number.lcl");
-    prog->readLibrary("library/pair.lcl");
-    prog->readLibrary("library/test.lcl");
-    prog->readLibrary("library/control.lcl");
+    prog->addDefines(readLibrary("library/boolean.lcl"));
+    prog->addDefines(readLibrary("library/arithmetic.lcl"));
+    prog->addDefines(readLibrary("library/number.lcl"));
+    prog->addDefines(readLibrary("library/pair.lcl"));
+    prog->addDefines(readLibrary("library/test.lcl"));
+    prog->addDefines(readLibrary("library/control.lcl"));
 
 
     //reduce in normal order
-    prog->determineBinding();
+    /*prog->determineBinding();
     prog->betaReduceNormalOrder();
     prog->checkForDefines();*/
 

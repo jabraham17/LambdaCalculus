@@ -13,15 +13,24 @@ private:
     std::vector<Term*> statements;
     SymbolTable* table;
     std::vector<Define*> library;
+    std::vector<Define*> userLibrary;
+    std::vector<Define*> allDefines;
 
 public:
     Program();
     ~Program();
 
-    std::vector<Term*> getStatements() const;
+    std::vector<Term*>& getStatements();
+    SymbolTable*& getSymbolTable();
+    std::vector<Define*>& getLibraryDefines();
+    std::vector<Define*>& getUserLibraryDefines();
+    std::vector<Define*>& getAllDefines();
+
     void addStatement(Term*);
-    SymbolTable* getSymbolTable();
-    std::vector<Define*> getLibraryDefines();
+    void addDefine(Define*);
+    void addDefines(std::vector<Define*>);
+    void addUserDefine(Define*);
+    void addUserDefines(std::vector<Define*>);
 
     friend std::ostream& operator<<(std::ostream&, const Program&);
     std::string toJSON();
@@ -45,5 +54,7 @@ public:
     void checkForDefines();*/
 
 };
+
+std::vector<Define*> readLibrary(std::string);
 
 #endif

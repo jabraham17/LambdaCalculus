@@ -3,20 +3,42 @@
 #include <fstream>
 
 
-Program::Program(): statements(), table(new SymbolTable()), library() {}
+Program::Program(): statements(), table(new SymbolTable()), library(), userLibrary(), allDefines() {}
 Program::~Program() {
     delete(table);
 }
 
-std::vector<Term*> Program::getStatements() const {return statements;}
+std::vector<Term*>& Program::getStatements() {return statements;}
+SymbolTable*& Program::getSymbolTable() {return table;}
+std::vector<Define*>& Program::getLibraryDefines() {return library;}
+std::vector<Define*>& Program::getUserLibraryDefines() {return library;}
+std::vector<Define*>& Program::getAllDefines() {return allDefines;}
+
 void Program::addStatement(Term* t) {statements.push_back(t);}
-SymbolTable* Program::getSymbolTable() {return table;}
-std::vector<Define*> Program::getLibraryDefines() {return library;}
+
+void Program::addDefine(Define* d) {
+    this->library.push_back(d);
+    this->allDefines.push_back(d);
+}
+void Program::addDefines(std::vector<Define*> ds) {
+    for(auto d: ds) {
+        addDefine(d);
+    }
+}
+void Program::addUserDefine(Define* d) {
+    this->userLibrary.push_back(d);
+    this->allDefines.push_back(d);
+}
+void Program::addUserDefines(std::vector<Define*> ds) {
+    for(auto d: ds) {
+        addUserDefine(d);
+    }
+}
 
 
 std::ostream& operator<<(std::ostream& out, const Program& p) {
     std::string sep;
-    for(auto statement: p.getStatements()) {
+    for(auto statement: p.statements) {
         out << sep << *statement;
         sep = '\n';
     }
@@ -58,23 +80,8 @@ std::string Program::toJSON() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//TODO
-/*
 //read in the library file and append to the vector the definitons, everything else is trash
-void Program::readLibrary(std::string file) {
+std::vector<Define*> readLibrary(std::string file) {
 
     //parse the library file
     std::ifstream in(file);
@@ -83,26 +90,13 @@ void Program::readLibrary(std::string file) {
 
     Program* lib = p.getProgram();
 
-    //before we read the defintions, we need to determine bindings
-    lib->determineBinding();
-
 
     //read in the new definitions, dont care about anything else
-    std::vector<Define*> newDefs = lib->table->defines;
-
-    //append these defines to the end of the library
-    for(auto d: newDefs) {
-        this->library.push_back(d);
-    }
+    std::vector<Define*> newDefs = lib->getAllDefines();
+    return newDefs;
 }
 
-//put all defines in a list, user defined first
-std::vector<Define*> Program::allDefines() {
-    std::vector<Define*> allDefs;
-    for(auto d: this->table->defines) allDefs.push_back(d);
-    for(auto d: this->library) allDefs.push_back(d);
-    return allDefs;
-}
+/*
 
 //apply reduction in normal order to all expressions
 void Program::betaReduceNormalOrder() {
