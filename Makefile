@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -g -std=c++11 -Werror -Wextra
 LDFLAGS=
 EXTENSION= cc
-SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Term.cc Variable.cc Name.cc Program.cc Define.cc
+SOURCES=main.cc lexer.cc parser.cc preprocessor.cc symboltable.cc Term.cc Variable.cc Name.cc Program.cc Define.cc NormalOrder.cc
 SOURCE_FOLDER= src
 OBJECTS = $(patsubst %.$(EXTENSION),$(OBJECT_FOLDER)/%.o,$(SOURCES))
 OBJECT_FOLDER=bin
@@ -44,6 +44,9 @@ $(OBJECT_FOLDER)/Program.o: $(SOURCE_FOLDER)/data/Program.cc $(SOURCE_FOLDER)/da
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJECT_FOLDER)/Define.o: $(SOURCE_FOLDER)/data/Define.cc $(DATA_HEADERS_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECT_FOLDER)/NormalOrder.o: $(SOURCE_FOLDER)/data/NormalOrder.cc $(SOURCE_FOLDER)/data/NormalOrder.h $(DATA_HEADERS_PATH)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: mkdirs

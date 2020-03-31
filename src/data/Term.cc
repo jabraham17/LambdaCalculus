@@ -54,25 +54,24 @@ bool Term::isValue() {return !isBetaRedex();}
 
 //get a list of parameters in function (t) that contain variables bound to parameter
 //parameters are the variable to a abstraction
-//TODO
-/*std::vector<Term**> listOfBoundParameter(Variable** param, Term** term) {
+std::vector<Term**> listOfBoundParameter(Variable*& param, Term*& term) {
     std::vector<Term**> res;
     //if this is an abstraction, check the param and call on the body
-    if((*term)->getType() == Term::ABS) {
+    if(term->isType(ABSTRACTION)) {
         //if the param is the same name as the passed in param, make a new list with one element and search the body
-        if(*((*term)->abstraction->variable) == **param) {
-            res.push_back(term);
+        if(*(term->getVariable()) == *param) {
+            res.push_back(&term);
         }
 
-        std::vector<Term**> fromBody = listOfBoundParameter(param, &((*term)->abstraction->term));
+        std::vector<Term**> fromBody = listOfBoundParameter(param, term->getBody());
         for(auto t: fromBody) {
             res.push_back(t);
         }
     }
-        //if this is an application, apply to left and right
-    else if((*term)->getType() == Term::APP) {
-        std::vector<Term**> a = listOfBoundParameter(param, &((*term)->application->a));
-        std::vector<Term**> b = listOfBoundParameter(param, &((*term)->application->b));
+    //if this is an application, apply to left and right
+    else if(term->isType(APPLICATION)) {
+        std::vector<Term**> a = listOfBoundParameter(param, term->getTermA());
+        std::vector<Term**> b = listOfBoundParameter(param, term->getTermB());
         for(auto t: a) {
             res.push_back(t);
         }
@@ -88,28 +87,27 @@ bool Term::isValue() {return !isBetaRedex();}
 //this is a valid redex so self is an application with 'a' as an abstraction
 //therefore we can get the variable and the term from it
 //the replacement term, tprime, is the 'b' of the abstraction
-//TODO
 void applyBetaRedex(Term*& self) {
 
     //the function we are replacing
-    Abstraction* abs = self->application->a->abstraction;
+    Term*& func = self->getTermA();
 
     //for all the parameters that could cause potential renaming issues, rename by appending an '_'
-    for(auto t: listOfBoundParameter(&(abs->variable), &(abs->term))) {
-        std::string newName = (*t)->abstraction->variable->getName() + "_";
-        (*t)->abstraction->alphaRename(newName);
+    for(auto t: listOfBoundParameter(func->getVariable(), func->getBody())) {
+        std::string newName = (*t)->getVariable()->getName() + "_";
+        (*t)->alphaRename(newName);
     }
 
     //what variable we are replacing, the parameter
-    Variable** param = &(abs->variable);
+    Variable*& param = func->getVariable();
     //the t term, must have paren
-    Term* t = abs->term;
+    Term*& t = func->getBody();
     t->addParen();
 
     //the t' term
-    Term* tprime = self->application->b;
-    //if this isnt an atom add paren
-    if(tprime->getType() != Term::ATOM) tprime->addParen();
+    Term*& tprime = self->getTermB();
+    //if this abstraction or application add paren
+    if(tprime->isType(ABSTRACTION) || tprime->isType(APPLICATION)) tprime->addParen();
 
     //replace all terms
     replaceVariable(t, param, tprime);
@@ -118,22 +116,21 @@ void applyBetaRedex(Term*& self) {
 }
 
 //for all the varaiables in t, replace them with tprime(tp)
-//TODO
-void replaceVariable(Term*& t, Variable** v, Term* tp) {
+void replaceVariable(Term*& t, Variable*& param, Term*& tp) {
     //if its an atom and the var is bound, replace with tp
-    if(t->type == Term::Type::ATOM && t->atom->getType() == Atom::VAR && t->atom->variable->isBoundTo(*v)) {
+    if(t->isType(VARIABLE) && t->getVariable()->isBoundTo(param)) {
         t = tp;
     }
-        //if an abstraction, call recursivly on abstraction body
-    else if(t->type == Term::Type::ABS) {
-        replaceVariable(t->abstraction->term, v, tp);
+    //if an abstraction, call recursivly on abstraction body
+    else if(t->isType(ABSTRACTION)) {
+        replaceVariable(t->getBody(), param, tp);
     }
-        //if an application, call recursivly on both terms
-    else if(t->type == Term::Type::APP) {
-        replaceVariable(t->application->a, v, tp);
-        replaceVariable(t->application->b, v, tp);
+    //if an application, call recursivly on both terms
+    else if(t->isType(APPLICATION)) {
+        replaceVariable(t->getTermA(), param, tp);
+        replaceVariable(t->getTermB(), param, tp);
     }
-}*/
+}
 
 
 //determine the binding for this abstraction

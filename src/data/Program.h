@@ -32,6 +32,11 @@ public:
     void addUserDefine(Define*);
     void addUserDefines(std::vector<Define*>);
 
+    //apply reduction in normal order to all expressions
+    void betaReduceNormalOrder();
+    //apply reduction in call by value to all expressions
+    void betaReduceCallByValue();
+
     friend std::ostream& operator<<(std::ostream&, const Program&);
     std::string toJSON();
 

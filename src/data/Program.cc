@@ -1,6 +1,7 @@
 #include "Program.h"
 #include "../parser.h"
 #include <fstream>
+#include "NormalOrder.h"
 
 
 Program::Program(): statements(), table(new SymbolTable()), library(), userLibrary(), allDefines() {}
@@ -33,6 +34,24 @@ void Program::addUserDefines(std::vector<Define*> ds) {
     for(auto d: ds) {
         addUserDefine(d);
     }
+}
+
+
+//apply reduction in normal order to all expressions
+void Program::betaReduceNormalOrder() {
+    for(auto term: statements) {
+
+        NormalOrder::betaReduce(term);
+        //std::cout << NormalOrder::findRedex(term) << std::endl;
+        //e->betaReduceNormalOrder(allDefines);
+    }
+}
+
+//apply reduction in call by value to all expressions
+void Program::betaReduceCallByValue() {
+    /*for(auto term: statements) {
+        //e->betaReduceCallByValue();
+    }*/
 }
 
 
@@ -96,31 +115,9 @@ std::vector<Define*> readLibrary(std::string file) {
     return newDefs;
 }
 
+
+
 /*
-
-//apply reduction in normal order to all expressions
-void Program::betaReduceNormalOrder() {
-
-    auto defs = allDefines();
-
-    for(auto e: statements) {
-        e->betaReduceNormalOrder(defs);
-    }
-}
-
-//apply reduction in call by value to all expressions
-void Program::betaReduceCallByValue() {
-    for(auto e: statements) {
-        e->betaReduceCallByValue();
-    }
-}
-
-//determine all abstractions bindings
-void Program::determineBinding() {
-    for(auto a: this->table->abstractions) {
-        a->determineBinding();
-    }
-}
 
 //check if this statement can be expressed as a define
 void Program::checkForDefines() {

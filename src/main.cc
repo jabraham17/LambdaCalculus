@@ -31,12 +31,14 @@ int main()
 
 
     //reduce in normal order
-    /*prog->determineBinding();
-    prog->betaReduceNormalOrder();
-    prog->checkForDefines();*/
+    //prog->determineBinding();
+    //prog->betaReduceNormalOrder();
+    //prog->checkForDefines();
 
     std::cout << *prog << std::endl;
-    std::cout << JSON::pretty(prog->toJSON()) << std::endl;
+    prog->betaReduceNormalOrder();
+    std::cout << *prog << std::endl;
+    //std::cout << JSON::pretty(prog->toJSON()) << std::endl;
 
 
 

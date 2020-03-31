@@ -52,7 +52,7 @@ class Term {
     //its a value if not reducible
     bool isValue();
     friend void applyBetaRedex(Term*&);
-    friend void replaceVariable(Term*&, Variable**, Term*);
+    friend void replaceVariable(Term*&, Variable*&, Term*&);
 
     //determine the binding for the vars in this
     void determineBinding();

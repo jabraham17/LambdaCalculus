@@ -89,38 +89,6 @@
    "-Werror",
    "-Wextra",
    "-c",
-   "src/data/Application.cc",
-   "-o",
-   "bin/Application.o"
-  ],
-  "file": "src/data/Application.cc"
- },
- {
-  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
-  "arguments": [
-   "g++",
-   "-Wall",
-   "-g",
-   "-std=c++11",
-   "-Werror",
-   "-Wextra",
-   "-c",
-   "src/data/Abstraction.cc",
-   "-o",
-   "bin/Abstraction.o"
-  ],
-  "file": "src/data/Abstraction.cc"
- },
- {
-  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
-  "arguments": [
-   "g++",
-   "-Wall",
-   "-g",
-   "-std=c++11",
-   "-Werror",
-   "-Wextra",
-   "-c",
    "src/data/Term.cc",
    "-o",
    "bin/Term.o"
@@ -190,5 +158,37 @@
    "bin/Variable.o"
   ],
   "file": "src/data/Variable.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-Wextra",
+   "-c",
+   "src/data/Name.cc",
+   "-o",
+   "bin/Name.o"
+  ],
+  "file": "src/data/Name.cc"
+ },
+ {
+  "directory": "/Users/abraham/Development/CPP/LambdaCalculus",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-std=c++11",
+   "-Werror",
+   "-Wextra",
+   "-c",
+   "src/data/NormalOrder.cc",
+   "-o",
+   "bin/NormalOrder.o"
+  ],
+  "file": "src/data/NormalOrder.cc"
  }
 ]
